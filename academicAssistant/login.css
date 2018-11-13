@@ -1,0 +1,104 @@
+/* some of the colors are kinda ugly but they can be easily changed */
+
+html * {
+	font-family: Calibri;
+}
+
+body {
+	height: 100%;
+	width: 100%;
+
+	margin: 0;
+	padding: 0;
+
+	background-color: #F0FFFF;
+	background-image: url("resources/dot.png");
+}
+
+#login {
+	background-color: #FFF;
+	border: 3px solid #DDD;
+	border-radius: 10px;
+	margin: 300px auto 0 auto;
+	padding: 0px 30px;
+
+	width: 300px;
+}
+
+#login * {
+	display: block;
+
+	box-sizing: border-box;
+}
+
+.entry {
+	display: block;
+	border-radius: 5px;
+	border-style: solid 2px #DDD;
+
+	padding-left: 8px;
+	font-size: 15px;
+
+	width: 100%;
+	height: 35px;
+
+	margin: 10px 0;
+}
+
+.entry:focus {
+	outline-style: none;
+}
+
+button {
+	border: 4px solid #B0E0E6;
+	border-radius: 12px;
+	background-color: #F0FFFF;
+
+	color: #B0E0E6;
+	font-size: 30px;
+	font-weight: bold;
+
+	width: 175px;
+	height: 50px;
+	margin: 20px auto 0 auto;
+
+	transition: .5s;
+}
+
+button:focus {
+	outline: none;
+}
+
+button:active {
+	transition: 0s;
+	border-color: #0099CC;
+	color: #FFF;
+	background-color: #0EBFE9;
+}
+
+button:hover {
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+#logo {
+	font-family: Impact;
+	width: 100%;
+	text-align: center;
+	padding: 0;
+
+	color: #0099CC;
+
+	font-size: 50px;
+
+}
+
+#switch {
+	width: 100%;
+	text-align: center;
+	margin: 10 0 0 0;
+	padding: 0;
+
+	color: #0099CC;
+	cursor: pointer;
+}

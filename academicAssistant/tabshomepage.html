@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+/* Style the tab */
+.myClass {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.myClass button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.myClass button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.myClass button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.classInformation {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+</style>
+</head>
+<body>
+
+
+
+<div class="myClass">
+  <button class="classBar" onclick="openCity(event, 'Math')">Math</button>
+  <button class="classBar" onclick="openCity(event, 'Reading')">Reading</button>
+  <button class="classBar" onclick="openCity(event, 'Writing')">Writing</button>
+</div>
+
+<div class="classInformation" id="Math">
+  <h3>Math</h3>
+</div>
+
+<div class="classInformation" id="Reading">
+  <h3>Reading</h3>
+</div>
+
+<div class="classInformation" id="Writing">
+  <h3>Writing</h3>
+</div>
+
+<script>
+function openCity(thisClass, courseName) {
+    var i, classInfo, classBar;
+    classInfo = document.getElementsByClassName("classInformation");
+    for (i = 0; i < classInfo.length; i++) {
+        classInfo[i].style.display = "none";
+    }
+    classBar = document.getElementsByClassName("classBar");
+    for (i = 0; i < classBar.length; i++) {
+        classBar[i].className = classBar[i].className.replace(" active", "");
+    }
+    document.getElementById(courseName).style.display = "block";
+    thisClass.currentTarget.className += " active";
+}
+</script>
+     
+</body>
+</html> 
