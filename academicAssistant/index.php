@@ -17,7 +17,13 @@
 
       .courses {
         display: inline;
-
+        margin-left: 20%;
+        margin-right: 20%;
+      }
+      
+      .courseParts {
+        margin-left: 20%;
+        margin-right: 20%;
       }
 
       .courses button {
@@ -50,9 +56,11 @@
     <h1 class="header"> Boogie Assistant </h1>
     <div class="courses">
       <button class="courseTabs" onclick="openTab(event, 'home')">Home</button>
+      <button class="courseTabs" onclick="openTab(event, 'Math')">Math</button>
     </div>
-    <div>
+    <div class="courseParts">
       <h3 class="courseInfo" id="home">This is the homepage</h3>
+      <h3 class="courseInfo" id="Math">This is the math page</h3>
     </div>
   </body>
 </html>
