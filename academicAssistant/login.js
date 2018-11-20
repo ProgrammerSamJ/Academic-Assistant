@@ -1,15 +1,33 @@
+function changeStatus() {
+  if(document.getElementById("status").value == "register"){
+    document.getElementById("status").value = "login";
+  }
+  else{
+    document.getElementById("status").value = "register";
+  }
+}
+
 $(document).ready( function() {
-	var state = "R"			// To track whether they're logging in or not.
-							// There's definitely a better way but this
-							// works for now.
+  var number = 0;
+  
+  $("#switch").click(function() {
+    
+    if(number == 0){
+      $("#switch").text("I need to register");
+      number = 1;
+    }
+    else{
+      $("#switch").text("I already have an account");
+      number = 0;
+    }
+    
+    $("#firstname").slideToggle();
+    $("#lastname").slideToggle();
+    $("#email").slideToggle();
+    $("#password2").slideToggle();
+    $(".errors").slideToggle();
 
-	$("#switch").click(function() {
-		$("#email").slideToggle();
-		$("#pass2").slideToggle();
-		$("#switch").slideToggle();
-
-		$("#enter").text("Log In");
-		$("#login").css({ "transition": ".6s", "padding": "0px 30px 30px 30px"});
-		state = "L";
-	});
+    $("#enter").text("Log In");
+    $("#login").css({ "transition": ".6s"});
+  });
 });
