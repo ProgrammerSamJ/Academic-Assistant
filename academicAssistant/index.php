@@ -2,7 +2,9 @@
 
   require "config/config.php";  
 
-  $status = "";
+  $status = "login";
+  $button = "Log In";
+  $statusrep = "Don't have an account? Register Now!"; 
 
   if(isset($_POST["status"])){
     $status = $_POST["status"];
@@ -24,9 +26,69 @@
   $password = "";
   $reenterpassword = "";
   $email = "";
+
+  $firstnamevar = "firstname";
+  $lastnamevar = "lastname";
+  $emailvar = "email";
+  $password2var = "password2";
+
+  /* Change the protocol if the user already has an account */
+  if($status == "login"){
+    
+    $button = "Log In";
+    $statusrep = "Don't have an account? Register Now!"; 
+    
+    $firstnamevar = "firstname";
+    $lastnamevar = "lastname";
+    $emailvar = "email";
+    $password2var = "password2";
+
+    if(isset($_POST["save"])){
+      if(!isset($_POST["username"]) || trim($_POST["username"] == "")){
+        $usernameError = "<div>Please enter a username!</div>";
+      }
+      else{
+        $username = $_POST["username"];
+      }
+      if(!isset($_POST["password"]) || trim($_POST["password"]) == ""){
+        $passwordError = "<div>Please enter a password!</div>";
+      }
+      else{
+        $password = $_POST["password"];
+      }
+    }
+
+    if($username && $password){
+      @ $conn = new mysqli($config["DB_HOST"], $config["DB_USERNAME"], $config["DB_PASSWORD"], "academicasisstant");
+      $grabAccount = "SELECT userid, first_name, last_name FROM users where username ='$username' AND password ='$password'";
+      $query = $conn->prepare($grabAccount);
+      $query->execute();
+      $query->bind_result($userid, $firstname, $lastname);
+      $query->fetch();
+      $query->close();
+
+      if($userid){
+        $noAccountError = "<div>Successfully logged in! Welcome, " . $firstname . " " . $lastname . "</div>";
+        header("Location: homepage.php");
+        exit();
+      }
+      else{
+        $noAccountError = "<div>Invalid Account!</div>";
+      }
+      @ $conn->close;
+    }
+  }
   
   /* Change the protocol if the user does not have an account */
   if($status == "register"){
+    
+    $button = "Register";
+    $statusrep = "Already have an account? Log In!"; 
+    
+    $firstnamevar = "firstnamechange";
+    $lastnamevar = "lastnamechange";
+    $emailvar = "emailchange";
+    $password2var = "password2change";
 
     if(isset($_POST["save"])){
       if(!isset($_POST["firstname"]) || trim($_POST["firstname"]) == ""){
@@ -80,28 +142,6 @@
         die("Error while trying to connect to database: " . $conn->connect_error);
       }
 
-      //----->>>>> Possibility of creating a database in the MySQL in the //----->>>>> case it does not already exists
-      /////////////////////////////////////////////////////////////////////
-      //  $sql = "CREATE DATABASE IF NOT EXISTS users";
-      //  if($conn->query($sql) == TRUE){
-      //    echo "Database created successfully";
-      //  }
-      //  else{
-      //    echo "Error in creating database: " . $conn->error;
-      //  }
-      //    
-      //  mysql_select_db($conn, "academicasisstant");
-      //  $sql = "CREATE TABLE IF NOT EXISTS users (
-      //          userid int(255) UNSIGNED NOT NULL,
-      //          last_name varchar(100) NOT NULL,
-      //          first_name varchar(100) NOT NULL,
-      //          username varchar(100) NOT NULL,
-      //          password varchar(100) NOT NULL,
-      //          email varchar (320) NOT NULL
-      //        ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
-      //
-      ///////////////////////////////////////////////////////////////////
-
       if($firstname && $lastname && $username && $password && $email){
         
         $grabAccount = "SELECT userid, first_name, last_name FROM users where username ='$username' AND password ='$password'";
@@ -113,7 +153,6 @@
         
         if($userid){
           echo "Account already registered. Log In!";
-          echo "Running....";
         }
         
         else{
@@ -130,58 +169,17 @@
       @ $conn->close;
     }
   }
-  
-
-  /* Change the protocol if the user already has an account */
-  if($status == "login"){
-
-    if(isset($_POST["save"])){
-      if(!isset($_POST["username"]) || trim($_POST["username"] == "")){
-        $usernameError = "<div>Please enter a username!</div>";
-      }
-      else{
-        $username = $_POST["username"];
-      }
-      if(!isset($_POST["password"]) || trim($_POST["password"]) == ""){
-        $passwordError = "<div>Please enter a password!</div>";
-      }
-      else{
-        $password = $_POST["password"];
-      }
-    }
-
-    if($username && $password){
-      @ $conn = new mysqli($config["DB_HOST"], $config["DB_USERNAME"], $config["DB_PASSWORD"], "academicasisstant");
-      $grabAccount = "SELECT userid, first_name, last_name FROM users where username ='$username' AND password ='$password'";
-      $query = $conn->prepare($grabAccount);
-      $query->execute();
-      $query->bind_result($userid, $firstname, $lastname);
-      $query->fetch();
-      $query->close();
-
-      if($userid){
-        $noAccountError = "<div>Successfully logged in! Welcome, " . $firstname . " " . $lastname . "</div>";
-        header("Location: index.php");
-        exit();
-      }
-      else{
-        $noAccountError = "<div>Account could not be found. Have you registered?</div>";
-      }
-    }
-    @ $conn->close;
-  }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Login - Academic Assistant</title>
-    <link rel="stylesheet" type="text/css" href="registerlogin.css">
+    <link rel="stylesheet" type="text/css" href="index.css">
   </head>
   
   <body>  
-    <form id="login" name="login" action="registerlogin.php" method="post">
+    <form id="login" name="login" action="index.php" method="post">
       
       <h1 id="logo">Login/Register</h1>
       
@@ -194,9 +192,9 @@
       <label class="errors">
         <?php if($firstnameError) { echo $firstnameError; } ?>
       </label>
-      
+            
       <!-- First Name input area -->
-      <input class="entry" id="firstname" type="text" size="1000" name="firstname" placeholder="First name" value="<?php echo $firstname; ?>"/>
+      <input class="entry" id="<?php echo $firstnamevar; ?>" type="text" size="1000" name="firstname" placeholder="First name" value="<?php echo $firstname; ?>"/>
       
       <!-- No Last name error -->
       <label class="errors">
@@ -204,7 +202,7 @@
       </label>
       
       <!-- Last name input area -->
-      <input class="entry" id="lastname" type="text" size="1000" name="lastname" placeholder="Last name" value="<?php echo $lastname; ?>" />
+      <input class="entry" id="<?php echo $lastnamevar; ?>" type="text" size="1000" name="lastname" placeholder="Last name" value="<?php echo $lastname; ?>" />
       
       <!-- No E-mail Error -->
       <label class="errors">
@@ -212,7 +210,7 @@
       </label>
       
       <!-- Email input area -->
-      <input class="entry" id="email" type="text" size="1000" name="email" placeholder="E-mail" value="<?php echo $email; ?>">
+      <input class="entry" id="<?php echo $emailvar; ?>" type="text" size="1000" name="email" placeholder="E-mail" value="<?php echo $email; ?>">
       
       <!-- Username authentication error / No username error -->
       <label class="errors">
@@ -220,7 +218,7 @@
       </label>
       
       <!-- Username input area -->
-      <input class="entry" id="username" type="text" size="1000" name="username" placeholder="Username" value="<?php if($status == "register"){echo $username;} ?>"/>
+      <input class="entry" id="username" type="text" size="1000" name="username" placeholder="Username" value="<?php echo $username; ?>"/>
     
       <!-- Password authentication error / No password error -->
       <label class="errors">
@@ -235,23 +233,23 @@
       </label>
       
       <!-- Re-entering the password -->
-      <input class="entry" id="password2" type="password" size="1000" name="password2" placeholder="Re-enter your password">
+      <input class="entry" id="<?php echo $password2var; ?>" type="password" size="1000" name="password2" placeholder="Re-enter your password">
       
       <!-- Submit button to request authentication from database -->
-      <button id="enter" type="submit" value="save" name="save">Log In</button>
+      <button id="enter" type="submit" value="save" name="save"><?php echo $button; ?></button>
       
       <!-- Hidden input value that determines whether to use the login protocol or the register protocol -->
-      <input id="status" type="hidden" name="status" value="login"/>
+      <input id="status" type="hidden" name="status" value="<?php echo $status; ?>"/>
       
       <a id="switch">
-        Don't have an account? Register Now!
+        <?php echo $statusrep; ?>
       </a>
       
     </form>
     
   </body>
   
-  <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
-  <script type="text/javascript" src="registerlogin.js"></script>
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="index.js"></script>
   
 </html>

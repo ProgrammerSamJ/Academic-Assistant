@@ -1,82 +1,123 @@
 <?php
 
+  @ $conn = new mysqli($config["DB_HOST"], $config["DB_USERNAME"], $config["DB_PASSWORD"], "academicasisstant");
+
+  
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+
+<!doctype html>
+
+<html>
   <head>
-    <title>Boogie Assistant</title>
-    <link rel="stylesheet" href="resources/css.css">
-    <script type="text/javascript" src="resources/js.js"></script>
-    
-    <style>
-      .header {
-        color: blue;
-      }
-
-      .courses {
-        display: inline;
-        margin-left: 20%;
-        margin-right: 20%;
-      }
-      
-      .courseParts {
-        margin-left: 20%;
-        margin-right: 20%;
-      }
-
-      .courses button {
-        border-style: none;
-        background-color: white;
-        padding: 20px 20px 20px 20px;
-        margin-bottom: -20px;
-      }
-      
-      .courses button:hover {
-        background-color: lawngreen;
-      }
-
-      .courses button:active {
-        background-color: lightskyblue;
-      }
-      
-      .courses button.active {
-        background-color: gray;
-      }
-
-      .courseInfo {
-        display: none;
-        background-color: lightgray;
-        padding: 20px 20px 20px 20px;
-      }
-    </style>
+      <title>Home - Academic Assistant</title>
+      <link rel="stylesheet" type="text/css" href="homepage.css">
   </head>
+
   <body>
-    <h1 class="header"> Boogie Assistant </h1>
-    <div class="courses">
-      <button class="courseTabs" onclick="openTab(event, 'home')">Home</button>
-      <button class="courseTabs" onclick="openTab(event, 'Math')">Math</button>
+    <div id="header">
+      <span id="logo">Academic Assistant</span>
+
+      <div id="userpanel">
+        <div id="user">
+          <span id="username"></span>
+          <span id="logout" onclick="return logout();">Sign Out</span>
+        </div>
+
+        <img src="https://stoffe.kawaiifabric.com/images/product_images/large_img/solid-red-fabric-Robert-Kaufman-USA-Red-179485-1.JPG" id="userimage" />
+      </div>
     </div>
-    <div class="courseParts">
-      <h3 class="courseInfo" id="home">This is the homepage</h3>
-      <h3 class="courseInfo" id="Math">This is the math page</h3>
+
+    <div id="mainbox">
+      <div id="navbar">
+        <button id="hometab" class="tab">Home</button>
+        <button class="tab classtab">Class 1</button>
+        <button class="tab classtab">Class 2</button>
+      </div>
+
+    <div id="content">
+      <div id="homecontent" class="tabcontent">
+          <div class="contentheader">
+              <div id="homegrades" class="grades">
+                  <div class="gradebubble">
+
+                  </div>
+                  <div class="gradedetails">
+
+                  </div>
+              </div>
+              <div id="homeassignments" class="assignments">
+
+              </div>
+          </div>
+      </div>
+
+      <div id="class1" class="classcontent tabcontent">
+          <div class="contentheader">
+              <div id="homegrades" class="grades">
+                  <div class="gradebubble">
+
+                  </div>
+                  <div class="gradedetails">
+
+                  </div>
+              </div>
+              <div id="homeassignments" class="assignments">
+
+              </div>
+          </div>
+      </div>
+
+      <div id="class2" class="classcontent tabcontent">
+          <div class="contentheader">
+              <div id="homegrades" class="grades">
+                  <div class="gradebubble">
+
+                  </div>
+                  <div class="gradedetails">
+
+                  </div>
+              </div>
+              <div id="homeassignments" class="assignments">
+
+              </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+      <div id="navigation">
+          <div id="hometab">
+              Home
+          </div>
+          <div id="className1" class="classtab">
+              Class1
+          </div>
+          <div id="className2" class="classtab">
+              Class2
+          </div>
+      </div>
+
+
+
+      <div id="homeContent">
+
+      </div>
+
+
+
+      <div id="classContent1" class="tabContent">
+
+      </div>
+
+
+
+      <div id="classContent2" class="tabContent">
+
+      </div>
+
+      <script type="text/javascript" src="jquery.js"></script>
+      <script type="text/javascript" src="homepage.js"></script>
   </body>
 </html>
-
-<script>
-  function openTab(thisCourse, courseName){
-    var courseTabs, courseInfo;
-    courseInfo = document.getElementsByClassName("courseInfo");
-    for(var i=0; i<courseInfo.length; i++){
-      courseInfo[i].style.display = "none";
-    }
-    courseTabs = document.getElementsByClassName("courseTabs");
-    for(var i=0; i<courseTabs.length; i++){
-      courseTabs[i].className = courseTabs[i].className.replace(" active", "");
-    }
-    document.getElementById(courseName).style.display = "block";
-    thisCourse.currentTarget.className += " active";
-  }
-</script>

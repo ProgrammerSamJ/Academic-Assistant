@@ -96,6 +96,10 @@ button:hover {
   cursor: pointer;
 }
 
+#firstnamechange, #lastnamechange, #emailchange, #password2change {
+  display: block;
+}
+
 #firstname, #lastname, #email, #password2 {
   display: none;
 }

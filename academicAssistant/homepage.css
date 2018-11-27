@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css?family=Fredoka+One');
+
+html {
+	font-family: Calibri;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+
+	min-width: 850px;
+}
+
+#header {
+	height: 40px;
+	padding: 10px 15px;
+
+	background-color: #F3F3F3;
+}
+
+#logo {
+	font-family: Fredoka One;
+	font-size: 35px;
+	color: #00B2EE;
+}
+
+#userpanel {
+	float: right;
+	clear: right;
+	display: inline-block;
+}
+
+#user {
+	float: left;
+	clear: left;
+}
+
+#user span {
+	text-align: right;
+}
+
+#username {
+	display: block;
+
+	font-size: 18px;
+	font-weight: bold;
+	color: #999;
+}
+
+#logout {
+	display: block;
+
+	font-size: 11px;
+	color: #BBB;
+
+	cursor: pointer;
+}
+
+#logout:hover {
+	color: #00B2EE;
+	text-decoration: underline;
+}
+
+#userimage {
+	float: right;
+	clear: right;
+
+	display: inline-block;
+
+	height: 38px;
+	width: 38px;
+	margin-left: 17px;
+	border-radius: 20px;
+}
+
+
+#mainbox {
+	margin: 60px auto;
+	background-color: #F00;
+
+	min-width: 800px !important;
+}
+
+.tab {
+	margin: 0;
+	padding: 10px;
+	height: 40px;
+
+	background-color: white;
+	outline: none;
+
+	border: 4px solid #00B2EE;
+	border-bottom: none;
+
+	color: #00B2EE;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.classtab {
+	width: 100px;
+	margin-left: -4px;
+}
+
+.tabcontent {
+	padding: 20px;
+}
+
+.classcontent {
+	display: none;
+}
+
+/*
+#navigation div {
+	display: inline-block;
+	border: 2px solid black;
+}
+
+.tabcontent {
+	display: none;
+}
+*/

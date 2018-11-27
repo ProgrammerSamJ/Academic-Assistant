@@ -8,7 +8,7 @@
   $config = array(
     "DB_HOST" => "localhost",
     "DB_USERNAME" => "root",
-    "DB_PASSWORD" => "poke2468"
+    "DB_PASSWORD" => "dozen12345"
   );
 
 ?>
