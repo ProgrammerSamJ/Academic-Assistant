@@ -1,18 +1,3 @@
-<?php
-
-  require "config/config.php";
-
-  if(!isset($_SESSION)){
-    session_start();
-  }
-
-  $conn = new mysqli($config["DB_HOST"], $config["DB_USERNAME"], $config["DB_PASSWORD"], "academicassistant");
-
-  $userid = $_SESSION["userid"];
-  $firstname = $_SESSION["firstname"];
-  $lastname = $_SESSION["lastname"];
-
-?>
 <!doctype html>
 
 <html>

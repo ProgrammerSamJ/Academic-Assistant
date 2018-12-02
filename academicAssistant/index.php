@@ -2,6 +2,10 @@
 
   require "config/config.php";  
 
+  if(!isset($_SESSION)){
+    session_start();
+  }
+
   $status = "login";
   $button = "Log In";
   $statusrep = "Don't have an account? Register Now!"; 
@@ -9,6 +13,8 @@
   if(isset($_POST["status"])){
     $status = $_POST["status"];
   }
+
+  $accountmade = "";
 
   $noAccountError = "";
 
@@ -18,14 +24,6 @@
   $passwordError = "";
   $emailError = "";
   $reenterpasswordError= "";
-
-  $userid = "";
-  $firstname = "";
-  $lastname = "";
-  $username = "";
-  $password = "";
-  $reenterpassword = "";
-  $email = "";
 
   $firstnamevar = "firstname";
   $lastnamevar = "lastname";
@@ -47,35 +45,36 @@
       if(!isset($_POST["username"]) || trim($_POST["username"] == "")){
         $usernameError = "<div>Please enter a username!</div>";
       }
-      else{
-        $username = $_POST["username"];
-      }
       if(!isset($_POST["password"]) || trim($_POST["password"]) == ""){
         $passwordError = "<div>Please enter a password!</div>";
       }
-      else{
-        $password = $_POST["password"];
-      }
     }
 
-    if($username && $password){
-      @ $conn = new mysqli($config["DB_HOST"], $config["DB_USERNAME"], $config["DB_PASSWORD"], "academicasisstant");
-      $grabAccount = "SELECT userid, first_name, last_name FROM users where username ='$username' AND password ='$password'";
-      $query = $conn->prepare($grabAccount);
-      $query->execute();
-      $query->bind_result($userid, $firstname, $lastname);
-      $query->fetch();
-      $query->close();
+    if(isset($_POST["username"]) && isset($_POST["password"])){
+      if($_POST["username"] != "" && $_POST["password"] != ""){
+        $conn = new PDO("mysql:host=" . $config["DB_HOST"] . ";dbname=academicassistant", $config["DB_USERNAME"], $config["DB_PASSWORD"]);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-      if($userid){
-        $noAccountError = "<div>Successfully logged in! Welcome, " . $firstname . " " . $lastname . "</div>";
-        header("Location: homepage.php");
-        exit();
+        $grabAccount = $conn->query("SELECT userid, first_name, last_name FROM users where username = '" . $_POST['username'] . "' AND password = '" . $_POST['password'] . "'" );
+        $query = $grabAccount->fetch();
+
+        $userid = $query["userid"];
+        $firstname = $query["first_name"];
+        $lastname = $query["last_name"];
+
+        if($userid){
+          $_SESSION["userid"] = $userid;
+          $_SESSION["firstname"] = $firstname;
+          $_SESSION["lastname"] = $lastname;
+          header("Location: homepage.php");
+          exit();
+        }
+        else{
+          $noAccountError = "<div>Incorrect Username or Password!</div>";
+        }
       }
-      else{
-        $noAccountError = "<div>Invalid Account!</div>";
-      }
-      @ $conn->close;
+      
+      $conn = null;
     }
   }
   
@@ -94,84 +93,76 @@
       if(!isset($_POST["firstname"]) || trim($_POST["firstname"]) == ""){
         $firstnameError = "<div>Please enter your first name!</div>";
       }
-      else{
-        $firstname = $_POST["firstname"];
-      }
       if(!isset($_POST["lastname"]) || trim($_POST["lastname"]) == ""){
         $lastnameError = "<div>Please enter your last name!</div>";
-      }
-      else{
-        $lastname = $_POST["lastname"];
       }
       if(!isset($_POST["username"]) || trim($_POST["username"]) == ""){
         $usernameError = "<div>Please enter a username!</div>";
       }
-      else{
-        $username = $_POST["username"];
-      }
       if(!isset($_POST["password"]) || trim($_POST["password"]) == ""){
         $passwordError = "<div>Please enter a password!</div>";
-      }
-      else{
-        $password = $_POST["password"];
       }
       if(!isset($_POST["password2"]) || trim($_POST["password2"]) == ""){
         $reenterpasswordError = "<div>Re-enter the password!</div>";
       }
-      else{
-        $reenterpassword = $_POST["password2"];
-      }
       if(!isset($_POST["email"]) || trim ($_POST["email"]) == ""){
         $emailError = "<div>Please enter a correct email address!</div>";
       }
-      else{
-        $email = $_POST["email"];
-      }
+
     }
-    
-    if($password != $reenterpassword){
-      $passwordError = "Passwords do no match!";
-    }
+  
+    if(isset($_POST["firstname"]) && isset($_POST["lastname"]) && isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["password2"]) && isset($_POST["email"])){
 
-    if($firstnameError=="" && $lastnameError=="" && $usernameError=="" && $passwordError=="" && $reenterpasswordError=="" && $emailError==""){
-      $servername = "localhost";
-      $dbname = "localhost/phpmyadmin/";
-
-      @ $conn = new mysqli($config["DB_HOST"], $config["DB_USERNAME"], $config["DB_PASSWORD"], "academicasisstant");
-      if ($conn->connect_error){
-        die("Error while trying to connect to database: " . $conn->connect_error);
-      }
-
-      if($firstname && $lastname && $username && $password && $email){
+      if($_POST["firstname"] != "" && $_POST["lastname"] != "" && $_POST["username"] != "" && $_POST["password"] != "" && $_POST["email"] != "" && $_POST["password2"] != ""){
         
-        $grabAccount = "SELECT userid, first_name, last_name FROM users where username ='$username' AND password ='$password'";
-        $query = $conn->prepare($grabAccount);
-        $query->execute();
-        $query->bind_result($userid, $firstname, $lastname);
-        $query->fetch();
-        $query->close();
-        
-        if($userid){
-          echo "Account already registered. Log In!";
+        if($_POST["password"] == $_POST["password2"]){
+          $conn = new PDO("mysql:host=" . $config["DB_HOST"] . ";dbname=academicassistant", $config["DB_USERNAME"], $config["DB_PASSWORD"]);
+          $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+          $grabAccount = $conn->query("SELECT userid, first_name, last_name FROM users WHERE username = '" . $_POST["username"] . "' AND password = '" . $_POST["password"] . "'" );
+          $query = $grabAccount->fetch();
+
+          $userid = $query["userid"];
+          $firstname = $query["first_name"];
+          $lastname = $query["last_name"];
+
+          if($userid){
+            $accountmade = "Account already registered. Log In!";
+            $_POST["firstname"] = "";
+            $_POST["lastname"] = "";
+            $_POST["email"] = "";
+            $_POST["username"] = "";
+          }
+
+          else{
+            $makeAccount = $conn->prepare("INSERT INTO users (last_name, first_name, username, password, email) VALUES (:lastname, :firstname, :username, :password, :email)");
+            $diditwork = $makeAccount->execute(array(":lastname" => $_POST["lastname"], ":firstname" => $_POST["firstname"], ":username" => $_POST["username"], ":password" => $_POST["password"], ":email" => $_POST["email"]));
+
+            if($diditwork === TRUE){
+              $accountmade = "Successfully made an account! Log in to get started!";
+              $_POST["firstname"] = "";
+              $_POST["lastname"] = "";
+              $_POST["email"] = "";
+              $_POST["username"] = "";
+            }
+            else {
+              $accountmade = "Error: " . $sql . "<br>" . $conn->error;
+            }
+          }
         }
         
         else{
-          $sql = "INSERT INTO users (last_name, first_name, username, password, email) VALUES ('$lastname', '$firstname', '$username', '$password', '$email')";
-
-          if($conn->query($sql) === TRUE){
-            echo "New record created successfully";
-          }
-          else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-          }
+          $passwordError = "Passwords do no match!";
         }
       }
-      @ $conn->close;
+      $conn = null;
     }
   }
 ?>
 
 <!DOCTYPE html>
+<html lang="en">
 <html lang="en">
   <head>
     <title>Login - Academic Assistant</title>
@@ -181,7 +172,11 @@
   <body>  
     <form id="login" name="login" action="index.php" method="post">
       
-      <h1 id="logo">Login/Register</h1>
+      <h1 id="logo">Academic Assistant</h1>
+      
+      <p>
+        <?php echo $accountmade; ?>
+      </p>
       
       <!-- When there is not an authentication error -->
       <label class="errors">
@@ -194,7 +189,7 @@
       </label>
             
       <!-- First Name input area -->
-      <input class="entry" id="<?php echo $firstnamevar; ?>" type="text" size="1000" name="firstname" placeholder="First name" value="<?php echo $firstname; ?>"/>
+      <input class="entry" id="<?php echo $firstnamevar; ?>" type="text" size="1000" name="firstname" placeholder="First name" value="<?php if(isset($_POST["firstname"])){echo $_POST["firstname"];} ?>"/>
       
       <!-- No Last name error -->
       <label class="errors">
@@ -202,7 +197,7 @@
       </label>
       
       <!-- Last name input area -->
-      <input class="entry" id="<?php echo $lastnamevar; ?>" type="text" size="1000" name="lastname" placeholder="Last name" value="<?php echo $lastname; ?>" />
+      <input class="entry" id="<?php echo $lastnamevar; ?>" type="text" size="1000" name="lastname" placeholder="Last name" value="<?php if(isset($_POST["lastname"])){echo $_POST["lastname"];} ?>" />
       
       <!-- No E-mail Error -->
       <label class="errors">
@@ -210,7 +205,7 @@
       </label>
       
       <!-- Email input area -->
-      <input class="entry" id="<?php echo $emailvar; ?>" type="text" size="1000" name="email" placeholder="E-mail" value="<?php echo $email; ?>">
+      <input class="entry" id="<?php echo $emailvar; ?>" type="text" size="1000" name="email" placeholder="E-mail" value="<?php if(isset($_POST["email"])){echo $_POST["email"];} ?>">
       
       <!-- Username authentication error / No username error -->
       <label class="errors">
@@ -218,7 +213,7 @@
       </label>
       
       <!-- Username input area -->
-      <input class="entry" id="username" type="text" size="1000" name="username" placeholder="Username" value="<?php echo $username; ?>"/>
+      <input class="entry" id="username" type="text" size="1000" name="username" placeholder="Username" value="<?php if(isset($_POST["username"])){echo $_POST["username"];} ?>"/>
     
       <!-- Password authentication error / No password error -->
       <label class="errors">

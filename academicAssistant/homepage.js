@@ -1,14 +1,25 @@
-function logout(){
-  window.location.replace("index.php");
-  return true;
-}
+$("#logout").click(function() {
+	// Log out user and return to login screen
+});
+
+
+
 
 // Resize main tab view with window
 $(document).ready(function() {
-	$("#mainbox").css("width", $(window).width()-200 + "px");
+	var width = $(window).width();
+	$("#mainbox").css("width", width-200 + "px");
+	$(".categoryBox").css("width", $("#mainbox").width()-40 + "px");
+	$(".categoryMenu").css("width", $("#mainbox").width()-55 + "px");
 });
 
 $(window).resize(function() {
+	var width = $(window).width();
+	$("#mainbox").css("width", width-200 + "px");
+	$(".categoryBox").css("width", $("#mainbox").width()-40 + "px");
+	$(".categoryMenu").css("width", $("#mainbox").width()-55 + "px");
+});
 
-	$("#mainbox").css("width", $(window).width()-200 + "px");
+$(".categoryHeader").click(function() {
+	$(this).next().slideToggle();
 });

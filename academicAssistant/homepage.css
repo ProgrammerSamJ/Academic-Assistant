@@ -16,6 +16,7 @@ body {
 	padding: 10px 15px;
 
 	background-color: #F3F3F3;
+	border-bottom: 3px solid #EEE;
 }
 
 #logo {
@@ -70,53 +71,196 @@ body {
 	height: 38px;
 	width: 38px;
 	margin-left: 17px;
-	border-radius: 20px;
+	border-radius: 100px;
 }
 
 
 #mainbox {
 	margin: 60px auto;
-	background-color: #F00;
-
 	min-width: 800px !important;
+
+	background-color: #F9F9F9;
+	border: 3px solid #EEE;
+	border-radius: 15px;
 }
 
-.tab {
-	margin: 0;
-	padding: 10px;
-	height: 40px;
+#classHeader {
+	display: block;
 
-	background-color: white;
+	height: 75px;
+}
+
+#classSelect {
+	vertical-align: middle;
+
+	margin: 20px;
+	padding-left: 5px;
+
+	height: 35px;
+	width: 200px;
+
+	border: 2px solid #EEE;
+	border-radius: 5px;
+
 	outline: none;
+}
 
-	border: 4px solid #00B2EE;
-	border-bottom: none;
+#classGrade {
+	float: right;
 
-	color: #00B2EE;
+	margin-top: 15px;
+	margin-right: 20px;
+}
+
+#classGradeNumber {
+	float: left;
+}
+
+#classGradeNumber p {
+	margin: 0;
+	padding: 0;
+	font-size: 35px;
 	font-weight: bold;
-	font-size: 18px;
+	color: #999;
 }
 
-.classtab {
-	width: 100px;
-	margin-left: -4px;
+#classGradeLetter {
+	float: right;
+	margin-top: 12px;
+	margin-left: 15px;
 }
 
-.tabcontent {
-	padding: 20px;
+#classGradeLetter p {
+	/* A #32CD32, B #0BB5FF, C #FFC125, D #BF5FFF, F #E3170D */
+	margin: 0;
+	padding: 0;
+	padding-top: 1px;
+
+	border-radius: 100px;
+
+	height: 20px;
+	width: 21px;
+
+	background-color: #0BB5FF;
+
+	text-align:center;
+
+	font-size: 14px;
+	color: #FFF;
+	font-weight: bold;
 }
 
-.classcontent {
-	display: none;
+
+
+
+
+.classContent {
+	padding-top: 20px;
 }
 
-/*
-#navigation div {
+.categoryBox {
+	margin: 0 auto 20px auto;
+}
+
+.categoryHeader {
+	height: 45px;
+
+	border: solid 3px #EEE;
+	border-radius: 7px;
+	background-color: #FFF;
+}
+
+.categoryTitle {
 	display: inline-block;
-	border: 2px solid black;
+	margin: 0;
+	padding: 8px 0 0 8px;
+
+	font-size: 25px;
+	font-weight: bold;
+	color: #999;
+
 }
 
-.tabcontent {
-	display: none;
+.categoryStats {
+	float: right;
+
+	margin: 7px 15px 0 0;
 }
-*/
+
+.categoryStats * {
+	display: inline;
+}
+
+.categoryWeight {
+	margin-right: 15px;
+
+	text-align: right;
+	color: #BBB;
+
+	font-variant: small-caps;
+}
+
+.categoryGrade {
+	font-size: 25px;
+	font-weight: bold;
+	color: #999;
+}
+
+.addAssignment {
+	float: right;
+	margin: 14px 9px 0 0;
+	padding: 0 0 0 0;
+
+	height: 16px;
+	width: 16px;
+
+	background-color: #BDFCC9;
+
+	border: 2px solid #32CD32;
+	border-radius: 2px;
+
+	font-family: Consolas;
+	font-size: 10px;
+	font-weight: bold;
+	color: #32CD32;
+	text-align: center;
+
+	cursor: pointer;
+	outline: none;
+}
+
+.categoryMenu {
+	display: none;
+	margin: 0 auto;
+	padding-top: 7px;
+
+	border: solid 3px #EEE;
+	border-radius: 0 0 7px 7px;
+	border-top: none;
+
+	background-color: #FFF;
+}
+
+.assignment {
+	display: block;
+	margin: 0 7px 7px 7px;
+
+	height: 35px;
+
+	border: 2px solid #EEE;
+	border-radius: 5px;
+
+	background-color: #FDFDFD;
+}
+
+.emptyMessage {
+	margin: 0 0 5px 7px;
+	padding: 0;
+
+	font-weight: bold;
+	color: #999;
+}
+
+.clear {
+	clear: both;
+}
