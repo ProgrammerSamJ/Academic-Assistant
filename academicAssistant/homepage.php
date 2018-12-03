@@ -23,16 +23,16 @@
     if($_POST["classname"] != "" && $_POST["worktype"] != "" && $_POST["gradeweight"] != ""){
       $addClass = $conn->prepare("INSERT INTO classes (userid, class, work_type, weight) VALUES (:userid, :class, :worktype, :weight)");
 
-      $insert = $addClass->execute(array(":userid" => $userid, 
-                                         ":class" => $_POST["classname"], 
-                                         ":worktype" => $_POST["worktype"], 
+      $insert = $addClass->execute(array(":userid" => $userid,
+                                         ":class" => $_POST["classname"],
+                                         ":worktype" => $_POST["worktype"],
                                          ":weight" => $_POST["gradeweight"]));
-      
+
       if($insert === TRUE){
         $insertedclass .= "Successfully inserted the class!";
       }
     }
-    
+
     else{
       $addclasserrors .= "Please fill in all the fields to add a class!";
     }
@@ -65,7 +65,7 @@
           else if($currenttime > $row["due_date"]){
             $indicator = "<div class='assignmentIndicator aiLate'></div>";
           }
-          $assignmentsarray += array($row["class"] . "," . $row["work_type"] => 
+          $assignmentsarray += array($row["class"] . "," . $row["work_type"] =>
                 "<div class='assignment'>" .
                   $indicator .
                   "<p class='assignmentTitle'>" . $row["assignment"] . "</p>
@@ -107,7 +107,7 @@
                             </div>
                             <div class='categoryMenu'>
                             </div>
-                          </div>"; 
+                          </div>";
         }
         else{
           $classes .= "<option value='" . $row["class"] . "'>" . $row["class"] . "</option>";
@@ -121,10 +121,10 @@
                                 <p class='categoryGrade'>87</p>
                               </div>
                             </div>
-                            <div class='categoryMenu'>" . 
+                            <div class='categoryMenu'>" .
                               $assignmentsarray[$row["class"] . "," . $row["work_type"]] .
                             "</div>
-                          </div>"; 
+                          </div>";
         }
       }
     }
@@ -138,6 +138,21 @@
 	<head>
 		<title>Home - Academia</title>
 		<link rel="stylesheet" type="text/css" href="homepage.css">
+    <script>
+      $(document).ready(function(){
+          $('#classSelect').change(function(){
+                var class = $(this).val();
+                $.ajax({
+                    url:"load_data.php",
+                     method:"POST",
+                    data:{class:class},
+                    success:function(data){
+                         $('#homeContent').html(data);
+                    }
+               });
+          });
+      });
+    </script>
 	</head>
 
 	<body>
@@ -147,7 +162,7 @@
 			<div id="userpanel">
 				<div id="user">
 					<span id="username">
-                      <?php 
+                      <?php
                         echo $firstname . " " . $lastname;
                       ?>
                     </span>
@@ -164,18 +179,18 @@
 			<div id="classHeader">
 				<select id="classSelect">
 					<option value="home">Home</option>
-                      <?php 
-                        echo $classes; 
+                      <?php
+                        echo $classes;
                       ?>
 				</select>
 			</div>
 
 			<div class="classContent" id="homeContent">
-              
+
                 <?php
                   echo $classinfo;
                 ?>
-              
+
 				<!-- INTERFACE FOR USERS TO ADD A CLASS -->
 				<div class="categoryBox">
 					<div class="contentWindow" id="addClass">
