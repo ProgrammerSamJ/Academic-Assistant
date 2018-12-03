@@ -52,7 +52,7 @@
 
     if(isset($_POST["username"]) && isset($_POST["password"])){
       if($_POST["username"] != "" && $_POST["password"] != ""){
-        $conn = new PDO("mysql:host=" . $config["DB_HOST"] . ";dbname=academicassistant", $config["DB_USERNAME"], $config["DB_PASSWORD"]);
+        $conn = new PDO("mysql:host=" . $config["DB_HOST"] . ";dbname=academia", $config["DB_USERNAME"], $config["DB_PASSWORD"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $grabAccount = $conn->query("SELECT userid, first_name, last_name FROM users where username = '" . $_POST['username'] . "' AND password = '" . $_POST['password'] . "'" );
@@ -116,7 +116,7 @@
       if($_POST["firstname"] != "" && $_POST["lastname"] != "" && $_POST["username"] != "" && $_POST["password"] != "" && $_POST["email"] != "" && $_POST["password2"] != ""){
         
         if($_POST["password"] == $_POST["password2"]){
-          $conn = new PDO("mysql:host=" . $config["DB_HOST"] . ";dbname=academicassistant", $config["DB_USERNAME"], $config["DB_PASSWORD"]);
+          $conn = new PDO("mysql:host=" . $config["DB_HOST"] . ";dbname=academia", $config["DB_USERNAME"], $config["DB_PASSWORD"]);
           $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
@@ -137,7 +137,8 @@
 
           else{
             $makeAccount = $conn->prepare("INSERT INTO users (last_name, first_name, username, password, email) VALUES (:lastname, :firstname, :username, :password, :email)");
-            $diditwork = $makeAccount->execute(array(":lastname" => $_POST["lastname"], ":firstname" => $_POST["firstname"], ":username" => $_POST["username"], ":password" => $_POST["password"], ":email" => $_POST["email"]));
+            $diditwork = $makeAccount->execute(array(":lastname" => $_POST["lastname"],
+                                                     ":firstname" => $_POST["firstname"], ":username" => $_POST["username"], ":password" => $_POST["password"], ":email" => $_POST["email"]));
 
             if($diditwork === TRUE){
               $accountmade = "Successfully made an account! Log in to get started!";
@@ -147,7 +148,7 @@
               $_POST["username"] = "";
             }
             else {
-              $accountmade = "Error: " . $sql . "<br>" . $conn->error;
+              $accountmade = "Error occurred. Please try again later.";
             }
           }
         }
@@ -159,20 +160,30 @@
       $conn = null;
     }
   }
+
+  if(isset($_POST["logout"])){
+    unset($_SESSION['username']);
+    unset($_SESSION['uid']);
+    
+    setcookie(session_name(), '', time() - 72000);
+    session_destroy();
+    
+    $accountmade = "You have successfully logged out!";
+  }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <html lang="en">
   <head>
-    <title>Login - Academic Assistant</title>
+    <title>Login - Academia</title>
     <link rel="stylesheet" type="text/css" href="index.css">
   </head>
   
   <body>  
     <form id="login" name="login" action="index.php" method="post">
       
-      <h1 id="logo">Academic Assistant</h1>
+      <h1 id="logo">Academia</h1>
       
       <p>
         <?php echo $accountmade; ?>

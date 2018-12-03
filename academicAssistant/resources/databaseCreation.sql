@@ -3,7 +3,7 @@
 --
 --
 -- Creating the initial database
-CREATE DATABASE IF NOT EXISTS academicassistant CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS academia CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 --
 -- Creating the table for the registered accounts
@@ -23,8 +23,7 @@ CREATE TABLE IF NOT EXISTS `classes` (
   `userid` int references users(userid),
   `class` varchar(100) NOT NULL,
   `work_type` varchar(100) NOT NULL,
-  `weight` int(3) NOT NULL,
-  PRIMARY KEY (`userid`)
+  `weight` int(3) NOT NULL
 );
 
 --
@@ -32,8 +31,8 @@ CREATE TABLE IF NOT EXISTS `classes` (
 CREATE TABLE IF NOT EXISTS `assignments` (
   `userid` int references users(userid),
   `class` varchar(100) references classes(class),
+  `work_type` varchar(100) references classes(work_type),
   `assignment` varchar(100) NOT NULL,
-  `due_date` date DEFAULT NULL,
-  PRIMARY KEY (`userid`)
-) 
-
+  `due_date` date NOT NULL,
+  `grade` int(3) DEFAULT NULL
+); 

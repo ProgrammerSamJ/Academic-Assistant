@@ -1,0 +1,121 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>Home - Academic Assistant</title>
+		<link rel="stylesheet" type="text/css" href="homepage.css">
+	</head>
+
+	<body>
+		<div id="header">
+			<span id="logo">Academic Assistant</span>
+
+			<div id="userpanel">
+				<div id="user">
+					<span id="username">allenz</span>
+					<span id="logout">Sign Out</span>
+				</div>
+
+				<img src="https://i.pinimg.com/originals/44/03/c0/4403c0b61671a3348009888bbe6e9730.jpg" id="userimage" />
+			</div>
+		</div>
+
+		<div id="mainbox">
+			<div id="classHeader">
+				<select id="classSelect">
+					<option value="home">Calculus II</option>
+				</select>
+
+				<div id="classGrade">
+					<div id="classGradeNumber">
+						<p>100</p>
+					</div>
+
+					<div id="classGradeLetter">
+						<p>D</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="classContent">
+				<div class="categoryBox">
+					<div class="contentWindow categoryHeader">
+						<p class="categoryTitle">Homework</p>
+						<button class="addAssignment">+</button>
+						<div class="categoryStats">
+							<p class="categoryWeight">weight: 0.4</p>
+							<p class="categoryGrade">100</p>
+						</div>
+					</div>
+
+					<div class="categoryMenu">
+						<div class="assignment">
+							<div class="assignmentIndicator aiLate"></div>
+								
+							<p class="assignmentTitle">Assignment 1</p>
+
+							<button class="editButton">edit</button>
+							<div class="assignmentInfo">
+								<p class="dueDate">due: oct 24</p>
+								<p class="assignmentGrade">89</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Header should have UI arrow, category title, weight, current average, and + button -->
+			
+		</div>
+
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="homepage.js"></script>
+	</body>
+</html>
+
+<!--
+			<div class="categoryBox">
+				<div class="contentWindow categoryHeader">
+					<p class="categoryTitle">Homework</p>
+					<button class="addAssignment">+</button>
+					<div class="categoryStats">
+						<p class="categoryWeight">weight: 0.4</p>
+						<p class="categoryGrade">87</p>
+					</div>
+				</div>
+
+				<div class="categoryMenu">
+					<div class="assignment">
+
+					</div>
+					<div class="assignment">
+
+					</div>
+					<div class="assignment">
+
+					</div>
+					<div class="assignment">
+
+					</div>
+					<div class="assignment">
+
+					</div>
+				</div>
+			</div>
+
+
+
+
+	Header elements
+	<div id="classGrade">
+		<div id="classGradeNumber">
+			<p>100</p>
+		</div>
+
+		<div id="classGradeLetter">
+			<p>D</p>
+		</div>
+	</div>
+-->
+
+<!-- Home has class grades, assignments for the next week, calculator, and add-class window -->
