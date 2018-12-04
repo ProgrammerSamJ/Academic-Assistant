@@ -444,7 +444,7 @@
                                   <div class="deleteCategory">X</div>
                               </div>
                           </div>
-                          <input id="createClass" type="submit" name="createClass" value="addClass" />
+                          <input id="createClass" type="submit" name="createClass" value="Add Class" />
 						</form>
 					</div>
 				</div>

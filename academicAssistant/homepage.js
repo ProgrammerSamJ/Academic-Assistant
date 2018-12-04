@@ -55,7 +55,7 @@ $(".editButton").click(function() {
     $(this).parent().siblings(".assignmentIndicator").replaceWith(deleteButton);
 
     var thisTitle = $(this).siblings(".assignmentTitle").text();
-    var titleField = `<input class="edithiddenstatus" type="hidden" name="editstatus" value="add"/><input type="text" name="assignmentName[]" placeholder="Assignment Name" 
+    var titleField = classname + worktype + `<input class="edithiddenstatus" type="hidden" name="editstatus" value="delete"/><input type="text" name="assignmentName[]" placeholder="Assignment Name" 
                      class="editAssignmentTitle" value="` + thisTitle + `" />`;
     $(this).siblings(".assignmentTitle").replaceWith(titleField);
   
