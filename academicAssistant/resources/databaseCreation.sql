@@ -18,12 +18,21 @@ CREATE TABLE IF NOT EXISTS `users` (
 );
 
 --
--- Creating a table for the classes that each user is currently taking
+-- Creating the table for grades associated with each user's class
 CREATE TABLE IF NOT EXISTS `classes` (
+  `userid` int references users(userid),
+  `class` varchar(100) references classes(class),
+  `grade` int(3) DEFAULT 0
+);
+
+--
+-- Creating a table for the classes that each user is currently taking
+CREATE TABLE IF NOT EXISTS `workgrade` (
   `userid` int references users(userid),
   `class` varchar(100) NOT NULL,
   `work_type` varchar(100) NOT NULL,
-  `weight` int(3) NOT NULL
+  `weight` int(3) NOT NULL,
+  `grade` int(3) DEFAULT 0
 );
 
 --
@@ -34,5 +43,5 @@ CREATE TABLE IF NOT EXISTS `assignments` (
   `work_type` varchar(100) references classes(work_type),
   `assignment` varchar(100) NOT NULL,
   `due_date` date NOT NULL,
-  `grade` int(3) DEFAULT NULL
+  `grade` int(3) DEFAULT 0
 ); 

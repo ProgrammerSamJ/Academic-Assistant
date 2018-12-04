@@ -84,8 +84,84 @@ body {
 	border-radius: 15px;
 }
 
+.classContent {
+	display: none;
+	padding-top: 20px;
+}
+
+#Home {
+	display: block;
+}
+
 /*//////////////////////////////////////////////////////////////////////////////////
-   ADD CLASS BOX
+  GRADE INDICATOR BUBBLES FOR CLASS LIST VIEW
+//////////////////////////////////////////////////////////////////////////////////*/
+
+.gradeIndicator {
+	float: right;
+	margin: 8px 8px 0 0;
+
+	height: 20px;
+	width: 20px;
+
+	border-radius: 100px;
+
+	text-align: center;
+	color: #FFF;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.classGrade {
+	float: right;
+	margin: 2px 12px 0 0;
+	font-size: 25px;
+	font-weight: bold;
+	color: #999;
+}
+
+.gradeA {
+	background-color: #32CD32;
+}
+
+.gradeA::after {
+	content: "A";
+}
+
+.gradeB {
+	background-color: #0BB5FF;
+}
+
+.gradeB::after {
+	content: "B";
+}
+
+.gradeC {
+	background-color: #FFC125;
+}
+
+.gradeC::after {
+	content: "C";
+}
+
+.gradeD {
+	background-color: #BF5FFF;
+}
+
+.gradeD::after {
+	content: "D";
+}
+
+.gradeF {
+	background-color: #E3170D;
+}
+
+.gradeF::after {
+	content: "F";
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////
+  "ADD CLASS" BOX
 //////////////////////////////////////////////////////////////////////////////////*/
 
 #addClassTitle {
@@ -200,32 +276,7 @@ body {
 
 #classGradeLetter {
 	float: right;
-	margin-top: 12px;
-	margin-left: 15px;
-}
-
-#classGradeLetter p {
-	/* A #32CD32, B #0BB5FF, C #FFC125, D #BF5FFF, F #E3170D */
-	margin: 0;
-	padding: 0;
-	padding-top: 1px;
-
-	border-radius: 100px;
-
-	height: 20px;
-	width: 21px;
-
-	background-color: #0BB5FF;
-
-	text-align:center;
-
-	font-size: 14px;
-	color: #FFF;
-	font-weight: bold;
-}
-
-.classContent {
-	padding-top: 20px;
+	margin: 4px 0 0 8px;
 }
 
 /*//////////////////////////////////////////////////////////////////////////////////
@@ -332,7 +383,7 @@ body {
 	border: 2px solid #EEE;
 	border-radius: 5px;
 
-	background-color: #FDFDFD;
+	background-color: #FCFCFC;
 }
 
 /* Assignment status indicator elements */
@@ -398,14 +449,32 @@ body {
 .dueDate {
 	color: #BBB;
 	font-variant: small-caps;
-	margin-right: 15px;
+	margin: 0;
+}
+
+.dueDateNotify {
+	float: right;
+	margin: 6px 12px 0 0;
+
+	font-variant: small-caps;
+	font-size: 20px;
+	font-weight: bold;
+	color: #BBB;
+}
+
+.dueDate span {
+	margin-left: 10px;
+}
+
+.dueDateNotify span {
+	margin-left: 15px;
 }
 
 .assignmentGrade {
 	font-size: 25px;
 	font-weight: bold;
 	color: #999;
-	margin-right: 15px;
+	margin: 0 15px;
 }
 
 .editButton {
@@ -439,13 +508,50 @@ body {
 	color: #999;
 }
 
+/*//////////////////////////////////////////////////////////////////////////////////
+  ADD/EDIT ASSIGNMENT DIALOGUE
+//////////////////////////////////////////////////////////////////////////////////*/
+
+.confirmEdit {
+	margin: 9px 8px 0 0;
+}
+
+.deleteAssignment {
+	float: left;
+	margin: 9px 0 0 9px;
+
+	border: solid 2px #EE3B3B;
+	background-color: #EEB4B4;
+	color: #EE3B3B;
+}
+
+.editAssignmentTitle, .editDueDate, .editAssignmentGrade {
+	padding-left: 4px;
+	border: 2px solid #DDD;
+	border-radius: 2px;
+	height: 18px;
+}
+
+.editAssignmentTitle {
+	margin: 5px 0 0 15px;
+	width: 150px;
+}
+
+.editDueDate {
+	margin: 5px 0 0 10px;
+	height: 20px;
+	width: 128px;
+}
+
+.editAssignmentGrade {
+	margin: 0 15px 0 0;
+	width: 43px;
+}
+
 .clear {
 	clear: both;
 }
 
 .error {
-  color: red;
-  margin: 0;
-  padding: 0;
-  margin-left: 30px;
+	color: #F00;
 }

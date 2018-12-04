@@ -183,7 +183,7 @@
   <body>  
     <form id="login" name="login" action="index.php" method="post">
       
-      <h1 id="logo">Academia</h1>
+      <h1 id="logo">ACADEMIA</h1>
       
       <p>
         <?php echo $accountmade; ?>

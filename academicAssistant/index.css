@@ -1,16 +1,15 @@
-/* some of the colors are kinda ugly but they can be easily changed */
+@import url('https://fonts.googleapis.com/css?family=Fredoka+One');
 
 html * {
   font-family: Calibri;
 }
 
 body {
-  height: 100%;
-  width: 100%;
   margin: 0;
   padding: 0;
-  background-color: #F0FFFF;
-  background-image: url("resources/dot.png");
+
+  height: 100%;
+  width: 100%;
 }
 
 .errors {
@@ -20,28 +19,33 @@ body {
 }
 
 #login {
-  background-color: #FFF;
-  border: 3px solid #DDD;
-  border-radius: 10px;
-  margin: 10% 20% 0 20%;
+  margin: 0 auto;
   padding: 0px 30px;
+
+  width: 300px;
+
+  background-color: #F9F9F9;
+  border: 4px solid #EEE;
+  border-radius: 10px;
 }
 
 #login * {
   display: block;
-  box-sizing: border-box;
 }
 
 .entry {
-  display: block;
-  border: 1px solid;
-  border-radius: 5px;
-  border-style: solid 2px #DDD;
-  padding-left: 8px;
-  font-size: 15px;
-  width: 100%;
-  height: 35px;
   margin: 10px 0;
+	padding-left: 8px;
+
+	width: 100%;
+	height: 35px;
+
+	border: solid 2px #DDD;
+	border-radius: 5px;
+
+	font-size: 15px;
+
+	box-sizing: border-box;
 }
 
 .entry:focus {
@@ -50,16 +54,20 @@ body {
 }
 
 button {
-  border: 4px solid #B0E0E6;
-  border-radius: 12px;
-  background-color: #F0FFFF;
-  color: #B0E0E6;
+  margin: 30px auto 20px auto;
+
+  border: 4px solid #BBB;
+  border-radius: 15px;
+  background-color: #FFF;
+
+  color: #BBB;
   font-size: 30px;
   font-weight: bold;
+
   width: 175px;
   height: 50px;
-  margin: 20px auto 0 auto;
-  transition: .5s;
+
+  transition: .25s;
 }
 
 button:focus {
@@ -68,9 +76,8 @@ button:focus {
 
 button:active {
   transition: 0s;
-  border-color: #0099CC;
-  color: #FFF;
-  background-color: #0EBFE9;
+  border-color: #00B2EE;
+  color: #00B2EE;
 }
 
 button:hover {
@@ -79,20 +86,24 @@ button:hover {
 }
 
 #logo {
-  font-family: Impact;
-  width: 100%;
-  text-align: center;
+  margin: 40px auto;
   padding: 0;
-  color: #0099CC;
+
+  text-align: center;
+
+  font-family: Fredoka One;
+  color: #00B2EE;
+  font-size: 50px;
 
 }
 
 #switch {
   width: 100%;
   text-align: center;
-  margin: 5% 0 5% 0;
+  margin: 10px 0 20px 0;
   padding: 0;
-  color: #0099CC;
+
+  color: #00B2EE;
   cursor: pointer;
 }
 

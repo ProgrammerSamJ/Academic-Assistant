@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>Home - Academic Assistant</title>
+		<title>CLASSPAGE</title>
 		<link rel="stylesheet" type="text/css" href="homepage.css">
 	</head>
 
@@ -32,14 +32,30 @@
 					</div>
 
 					<div id="classGradeLetter">
-						<p>D</p>
+						<div class="gradeIndicator gradeA"></div>
 					</div>
 				</div>
 			</div>
 
-			<div class="classContent">
+			<div class="classContent" id="Home">
 				<div class="categoryBox">
-					<div class="contentWindow categoryHeader">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					<div class="contentWindow categoryHeader" style="margin-top: 200px">
 						<p class="categoryTitle">Homework</p>
 						<button class="addAssignment">+</button>
 						<div class="categoryStats">
@@ -50,17 +66,41 @@
 
 					<div class="categoryMenu">
 						<div class="assignment">
-							<div class="assignmentIndicator aiLate"></div>
-								
-							<p class="assignmentTitle">Assignment 1</p>
+							<div class="assignmentIndicator aiComplete"></div>
+							
+							<div class="formBox">
+								<p class="assignmentTitle">Assignment 1</p>
 
-							<button class="editButton">edit</button>
-							<div class="assignmentInfo">
-								<p class="dueDate">due: oct 24</p>
-								<p class="assignmentGrade">89</p>
+								<button class="editButton">edit</button>
+								<div class="assignmentInfo">
+									<p class="dueDate">due:<span>2018-10-24</span></p>
+									<p class="assignmentGrade">89</p>
+								</div>
 							</div>
 						</div>
 					</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 				</div>
 			</div>
 
@@ -74,48 +114,22 @@
 </html>
 
 <!--
-			<div class="categoryBox">
-				<div class="contentWindow categoryHeader">
-					<p class="categoryTitle">Homework</p>
-					<button class="addAssignment">+</button>
-					<div class="categoryStats">
-						<p class="categoryWeight">weight: 0.4</p>
-						<p class="categoryGrade">87</p>
-					</div>
-				</div>
+AN ASSIGNMENT IN EDIT MODE
+						<div class="assignment">
+	                        <button class="addAssignment deleteAssignment">x</button>
 
-				<div class="categoryMenu">
-					<div class="assignment">
+	                        <form>
+	                        	
+	                        <input type="text" placeholder="Assignment Name" class="editAssignmentTitle" />
 
-					</div>
-					<div class="assignment">
+	                        <button class="addAssignment confirmEdit">></button>
+	                        <div class="assignmentInfo">
+	                        	<p class="dueDate">due:
+	                            	<input type="date" class="editDueDate" />
+	                        	</p>
+	                        	<input type="text" placeholder="Grade" class="editAssignmentGrade" />
+	                    	</div>
 
-					</div>
-					<div class="assignment">
-
-					</div>
-					<div class="assignment">
-
-					</div>
-					<div class="assignment">
-
-					</div>
-				</div>
-			</div>
-
-
-
-
-	Header elements
-	<div id="classGrade">
-		<div id="classGradeNumber">
-			<p>100</p>
-		</div>
-
-		<div id="classGradeLetter">
-			<p>D</p>
-		</div>
-	</div>
+	                      	</form>
+                        </div> 
 -->
-
-<!-- Home has class grades, assignments for the next week, calculator, and add-class window -->
