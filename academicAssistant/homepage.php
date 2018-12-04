@@ -88,45 +88,36 @@
 
   /* Adding an assignment to the work categories */
   if(isset($_POST["nowaddAssignment"]) && isset($_POST["editstatus"])){
-    if($_POST["editstatus"] == "add"){
-      $checkempty = 0;
-
-      for($x=0; $x<sizeof($_POST["assignmentClass"]); $x++){
-        if($_POST["assignmentName"][$x] == "" || $_POST["due_date"][$x] == ""){
-          $checkempty = 1;
-        }
+    $checkempty = 0;
+    if($_POST["assignmentName"] == "" || $_POST["due_date"] == ""){
+      $checkempty = 1;
+    }
+    if($checkempty == 0){
+      if($_POST["editstatus"] == "edit"){
+        $deleteassignment = $conn->prepare("DELETE FROM assignments WHERE userid=? AND class=? AND work_type=? AND assignment=?");
+        $deleteassignment->execute(array($_SESSION["userid"], $_POST["assignmentClass"], $_POST["assignmentWorktype"], $_POST["assignmentName"]));
       }
-      if($checkempty == 0){
-        for($x=0; $x<sizeof($_POST["assignmentClass"]); $x++){
-          if($_POST["assignmentgrade"][$x] == ""){
-            $_POST["assignmentgrade"][$x] = 0;
-          }
-          $_POST["due_date"][$x] = date("Y-m-d", strtotime($_POST["due_date"][$x]));
+      if($_POST["assignmentgrade"] == ""){
+        $_POST["assignmentgrade"] = 0;
+      }
+      $_POST["due_date"] = date("Y-m-d", strtotime($_POST["due_date"]));
 
-          $addAssignment = $conn->prepare("INSERT INTO assignments (userid, class, work_type, assignment, due_date, grade) VALUES (:userid, :class, :work_type, :assignment, :due_date, :grade)");
-          $insert = $addAssignment->execute(array(":userid" => $userid,
-                                                  ":class" => $_POST["assignmentClass"][$x],
-                                                  ":work_type" => $_POST["assignmentWorktype"][$x],
-                                                  ":assignment" => $_POST["assignmentName"][$x],
-                                                  ":due_date" => $_POST["due_date"][$x],
-                                                  ":grade" => $_POST["assignmentgrade"][$x]));
-          if($insert === TRUE){
-            $insertedclass .= "Successfully inserted assignment(s)!";
-          }
-          else{
-            $addclasserrors .= "There was an error inserting assignment(s)!";
-          }
-        }
+      $addAssignment = $conn->prepare("INSERT INTO assignments (userid, class, work_type, assignment, due_date, grade) VALUES (:userid, :class, :work_type, :assignment, :due_date, :grade)");
+      $insert = $addAssignment->execute(array(":userid" => $userid,
+                                              ":class" => $_POST["assignmentClass"],
+                                              ":work_type" => $_POST["assignmentWorktype"],
+                                              ":assignment" => $_POST["assignmentName"],
+                                              ":due_date" => $_POST["due_date"],
+                                              ":grade" => $_POST["assignmentgrade"]));
+      if($insert === TRUE){
+        $insertedclass .= "Successfully inserted assignment(s)!";
       }
       else{
-        $addclasserrors .= "Please fill in all the fields before adding assignments!";
+        $addclasserrors .= "There was an error inserting assignment(s)!";
       }
     }
-    else if ($_POST["editstatus"] == "edit"){
-      
-    }
-    else if ($_POST["editstatus"] == "delete"){
-      
+    else{
+      $addclasserrors .= "Please fill in all the fields before adding assignments!";
     }
   }
 
@@ -162,6 +153,9 @@
               $indicator = "<div class='assignmentIndicator aiComplete'></div>";
             }
           }
+          if($row["grade"] != 0){
+            $indicator = "<div class='assignmentIndicator aiComplete'></div>";
+          }
           $assignmentsarray += array($row["class"] . "," . $row["work_type"] => 
                 "<div class='assignment'>" .
                     $indicator .
@@ -195,6 +189,9 @@
               $indicator = "<div class='assignmentIndicator aiComplete'></div>";
             }
           }
+          if($row["grade"] != 0){
+            $indicator = "<div class='assignmentIndicator aiComplete'></div>";
+          }
           $assignmentsarray[$row["class"] . "," . $row["work_type"]] .= 
                 "<div class='assignment'>" .
                     $indicator .
@@ -214,7 +211,7 @@
   }
 
 
-  /* Grabbing the classes and the grade for the user */
+  /* Grabbing the classes, categories, the grade for the user */
   $grabClasses = $conn->query("SELECT class, grade FROM classes WHERE userid ='" . $userid . "'");
   $get = $grabClasses->fetchAll();
 
@@ -224,6 +221,16 @@
     $classes .= "<option value='" . $row["class"] . "'>" . $row["class"] . "</option>";
   }
 
+  $grabCategories = $conn->query("SELECT work_type FROM workgrade WHERE userid ='" . $userid . "'");
+  $get = $grabCategories->fetchAll();
+
+  $categories = "";
+
+  foreach($get as $row){
+    if(strpos($categories, $row["work_type"]) === false){
+      $categories .= "<option value='" . $row["work_type"] . "'>" . $row["work_type"] . "</option>";
+    }
+  }
 
   /* Grabbing all of the classwork of classes for the user */
   $whichClass = $conn->query("SELECT class FROM classes WHERE userid='" . $_SESSION["userid"] . "'");
@@ -261,6 +268,9 @@
           if($counter != 0){
             $average = $total / $counter;
           }
+          
+          $updateworkgrade = $conn->prepare("UPDATE workgrade SET grade=? WHERE userid=? AND class=? AND work_type=?");
+          $updateworkgrade->execute(array($average, $_SESSION["userid"], $classrow["class"], $row["work_type"]));
           /* ------------------------------------------------------ */
           
           if(empty($assignmentsarray[$classrow["class"] . "," . $row["work_type"]])){
@@ -300,6 +310,143 @@
       $classinfo .= "</div>";
     }
   }
+
+  /* Grabbing the overall grade for the class */
+  $overallgrade = $conn->query("SELECT class FROM classes WHERE userid='". $_SESSION["userid"] ."'");
+  $get = $overallgrade->fetchAll();
+
+  $gradeinfo = "";
+  $lettergrade = ""; 
+  
+  if($get){
+    foreach($get as $row){
+      $bringingGrades = $conn->query("SELECT weight, grade FROM workgrade WHERE userid='" .$_SESSION["userid"]. "' AND class='" .$row["class"]. "'");
+      $bring = $bringingGrades->fetchAll();
+
+      $finalgrade = 0;
+
+      foreach($bring as $rowtwo){
+        $finalgrade += ($rowtwo["weight"]/100) * $rowtwo["grade"];
+      }
+
+      $updateGrade = $conn->prepare("UPDATE classes SET grade=? WHERE userid=? AND class=?");
+      $updateGrade->execute(array($finalgrade, $_SESSION["userid"], $row["class"]));
+
+      if($finalgrade >= 90){
+        $lettergrade = "<div class='gradeIndicator gradeA'></div>";
+      }
+      if($finalgrade >= 80 && $finalgrade <= 89){
+        $lettergrade = "<div class='gradeIndicator gradeB'></div>";
+      }
+      if($finalgrade >= 70 && $finalgrade <= 79){
+        $lettergrade = "<div class='gradeIndicator gradeC'></div>";
+      }
+      if($finalgrade >= 60 && $finalgrade <= 69){
+        $lettergrade = "<div class='gradeIndicator gradeD'></div>";
+      }
+      if($finalgrade < 60){
+        $lettergrade = "<div class='gradeIndicator gradeF'></div>";
+      }
+
+
+      $gradeinfo .= "<div class='assignment'>" .
+                          $lettergrade .
+                        "<p class='assignmentTitle'>" .$row["class"]. "</p>
+                        <p class='classGrade'>". $finalgrade ."</p>
+                    </div>";
+
+    }
+  }
+  else{
+      $gradeinfo .= "<div class='assignment'>" .
+                        "<p class='assignmentTitle'>No grades recorded ..........</p>
+                    </div>";
+  }
+
+  $upcomingassignments = $conn->query("SELECT class, assignment, due_date FROM assignments WHERE userid='" .$_SESSION["userid"]. "'");
+  $get = $upcomingassignments->fetchAll();
+
+  $urgency = "";
+  $counter = 0;
+
+  if($get){
+    foreach($get as $row){
+      
+      $currenttime = date("Y-m-d");
+      
+      if($currenttime <= $row["due_date"]){
+        $diff = abs(strtotime($row["due_date"]) - strtotime($currenttime));
+        $diff = abs($diff / (60*60*24));
+        if($diff <= 7){
+          $urgency .= "<div class='assignment'>
+                        <div class='assignmentIndicator aiWarning'></div>
+                        <p class='assignmentTitle'>" .$row["class"] . ":" .$row["assignment"]. "</p>
+                        <p class='dueDateNotify'>due:<span>" .$row["due_date"]. "</span></p>
+                    </div>";
+          $counter++;
+        }
+        else{
+          continue;
+        }     
+      }
+      else{
+        continue;
+      }
+    }
+  }
+  else{
+    $urgency .= "<div class='assignment'>
+                    <p class='assignmentTitle'>No assignments...</p>
+                </div>";
+  }
+  
+  if($counter == 0){
+    $urgency .= "<div class='assignment'>
+                    <p class='assignmentTitle'>No assignments...</p>
+                </div>";
+  }
+
+  $calculated = "";
+  /* Grade Calculator */
+  if(isset($_POST["gradecalculator"])){
+    
+    $otherContributions = 0;
+    $currentselectedWeight = 0;
+    $currentselectedSum = 0;
+    
+    $getClassInfo = $conn->query("SELECT work_type, weight, grade FROM workgrade WHERE userid='" .$_SESSION["userid"]. "' AND class='" .$_POST["calculatorClass"]. "'");
+    $get = $getClassInfo->fetchAll();
+    
+    $getSum = $conn->query("SELECT grade FROM assignments WHERE userid='" . $_SESSION["userid"]."' AND class='" .$_POST["calculatorClass"]. "' AND work_type='" .$_POST["calculatorCategory"]. "'");
+    $numberofgrades = $getSum->fetchAll();
+    
+    $getWeight = $conn->query("SELECT weight FROM workgrade WHERE userid='" . $_SESSION["userid"]."' AND class='" .$_POST["calculatorClass"]. "' AND work_type='" .$_POST["calculatorCategory"]. "'");
+    $weight = $getWeight->fetch();
+    
+    foreach($get as $row){
+      if($row["work_type"] == $_POST["calculatorCategory"]){
+        continue;
+      }
+      else{
+        $otherContributions += ($row["weight"] / 100) * $row["grade"];
+      }
+    }
+    
+    foreach($numberofgrades as $gotrow){
+      $currentselectedSum += $gotrow["grade"];
+    }
+    
+    $currentselectedWeight = $weight["weight"];
+    
+    $_POST["desiredgrade"];
+    $_POST["totalassignments"];
+    
+    $calculatedSum = ((($_POST["desiredgrade"] - $otherContributions) / ($currentselectedWeight/100)) * $_POST["totalassignments"]) - $currentselectedSum;
+    
+    $calculated = "You need " .$calculatedSum. " points between your remaining assignments.";
+
+  }
+  
 ?>
 
 <!DOCTYPE html>
@@ -366,33 +513,9 @@
 					</div>
 
 					<div class="categoryMenu">
-						<div class="assignment">
-							<div class="assignmentIndicator aiLate"></div>
-
-							<p class="assignmentTitle">Assignment 1</p>
-							<p class="dueDateNotify">due:<span>2018-10-24</span></p>
-						</div>
-
-						<div class="assignment">
-							<div class="assignmentIndicator aiWarning"></div>
-							
-							<p class="assignmentTitle">Assignment 2</p>
-							<p class="dueDateNotify">due:<span>2018-10-24</span></p>
-						</div>
-
-						<div class="assignment">
-							<div class="assignmentIndicator aiWarning"></div>
-							
-							<p class="assignmentTitle">Assignment 3</p>
-							<p class="dueDateNotify">due:<span>2018-10-24</span></p>
-						</div>
-
-						<div class="assignment">
-							<div class="assignmentIndicator aiWarning"></div>
-							
-							<p class="assignmentTitle">Assignment 4</p>
-							<p class="dueDateNotify">due:<span>2018-10-24</span></p>
-						</div>
+                        <?php 
+                          echo $urgency;
+                        ?>
 					</div>
 				</div>
 
@@ -403,19 +526,9 @@
 					</div>
 
 					<div class="categoryMenu">
-						<div class="assignment">
-							<div class="gradeIndicator gradeA"></div>
-
-							<p class="assignmentTitle">Math</p>
-							<p class="classGrade">102</p>
-						</div>
-
-						<div class="assignment">
-							<div class="gradeIndicator gradeB"></div>
-							
-							<p class="assignmentTitle">Reading</p>
-							<p class="classGrade">98</p>
-						</div>
+                        <?php
+                          echo $gradeinfo;
+                        ?>
 					</div>
 				</div>
 				
@@ -444,7 +557,7 @@
                                   <div class="deleteCategory">X</div>
                               </div>
                           </div>
-                          <input id="createClass" type="submit" name="createClass" value="Add Class" />
+                          <input id="createClass" class="homeButton" type="submit" name="createClass" value="Add Class" />
 						</form>
 					</div>
 				</div>
@@ -456,39 +569,45 @@
 					</div>
 
 					<div class="categoryMenu">
-						<form>
+						<form id="calculateGradeWanted" method="post" action="homepage.php">
 
-						<div class="calculatorItem">
-							<p class="interfaceLabel">Class:</p>
-							<select id="calculatorClassSelector">
-								<option value="class1">Class 1</option>
-								<option value="class2">Class 2</option>
-							</select>
-						</div>
+                          <div class="calculatorItem">
+                              <p class="interfaceLabel">Class:</p>
+                              <select id="calculatorClassSelector" name="calculatorClass">
+                                  <?php
+                                    echo $classes
+                                  ?>
+                              </select>
+                          </div>
 
-						<div class="calculatorItem">
-							<p class="interfaceLabel">Category:</p>
-							<select>
-								<option value="cat1">Cat 1</option>
-								<option value="cat2">Cat 2</option>
-							</select>
-						</div>
+                          <div class="calculatorItem">
+                              <p class="interfaceLabel">Category:</p>
+                              <select id="calculatorCategory" name="calculatorCategory">
+                                  <?php
+                                    echo $categories;
+                                  ?>
+                              </select>
+                          </div>
 
-						<div class="calculatorItem">
-							<p class="interfaceLabel">Remaining Assignments:</p>
-							<input type="text" placeholder="0" class="uiField" />
-						</div>
+                          <div class="calculatorItem">
+                              <p class="interfaceLabel">Total Assignments in Category:</p>
+                              <input type="text" name="totalassignments" placeholder="0" class="uiField" />
+                          </div>
 
-						<div class="calculatorItem">
-							<p class="interfaceLabel">Desired Class Grade:</p>
-							<input type="text" placeholder="0" class="uiField" />
-						</div>
+                          <div class="calculatorItem">
+                              <p class="interfaceLabel">Desired Class Grade:</p>
+                              <input type="text" name="desiredgrade" placeholder="0" class="uiField" />
+                          </div>
 
-						<div class="calculatorItem">
-							<button>Submit</button>
-						</div>
+                            <input id="calculate" class="homeButton" type="submit" name="gradecalculator" value="Calculate" />
 
 						</form>
+                        
+                        <p id="result">
+                          <?php
+                            echo $calculated;
+                          ?>
+                        </p>
 					</div>
 				</div>
 			</div>

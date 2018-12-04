@@ -178,11 +178,11 @@ body {
 }
 
 #addCategoriesTitle {
-	margin: 10px 0 10px 20px;
+	margin: 10px 0px 15px 20px;
 }
 
-#addCategoriesTitle * {
-	display: inline-block;
+#addCategoriesTitle p {
+	float: left;
 }
 
 .newCategory {
@@ -209,6 +209,65 @@ body {
 	margin: 0 8px;
 }
 
+#addCategoryButton {
+	display: inline-block;
+	margin: 5px 0 0 0;
+	height: 12px;
+	width: 12px;
+
+	background-color: #BDFCC9;
+
+	border: 2px solid #32CD32;
+	border-radius: 2px;
+
+	font-family: Consolas;
+	font-size: 10px;
+	font-weight: bold;
+	color: #32CD32;
+	text-align: center;
+
+	cursor: pointer;
+	outline: none;
+}
+
+.deleteCategory {
+	margin: 0 0 0 9px;
+	padding: 0;
+
+	height: 12px;
+	width: 12px;
+
+	border: solid 2px #EE3B3B;
+	border-radius: 2px;
+
+	background-color: #EEB4B4;
+
+	font-size: 10px;
+	font-weight: bold;
+	color: #EE3B3B;
+	text-align: center;
+
+	cursor: pointer;
+}
+
+.homeButton {
+	margin: 0 0 20px 28px;
+	height: 25px;
+
+	background-color: #C1F0F6;
+
+	border: 2px solid #42C0FB;
+	border-radius: 2px;
+
+	font-weight: bold;
+	color: #42C0FB;
+	text-align: center;
+
+	cursor: pointer;
+	outline: none;
+}
+
+
 /*//////////////////////////////////////////////////////////////////////////////////
   CALCULATOR BOX
 //////////////////////////////////////////////////////////////////////////////////*/
@@ -228,6 +287,14 @@ body {
 
 #calculator .categoryTitle {
 	margin-bottom: 10px;
+}
+
+#result {
+  margin-left: 28px;
+    
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
 }
 
 /*//////////////////////////////////////////////////////////////////////////////////
@@ -546,10 +613,6 @@ body {
 .editAssignmentGrade {
 	margin: 0 15px 0 0;
 	width: 43px;
-}
-
-.clear {
-	clear: both;
 }
 
 .error {

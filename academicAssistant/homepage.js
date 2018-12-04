@@ -48,14 +48,14 @@ $("#addClassCategories").on("click", ".deleteCategory", function() {
 
 $(".editButton").click(function() {
   
-    var classname = "<input type='hidden' name='assignmentClass[]' value='" + $(this).parent().parents(".classContent").attr("id") + "'/>";
-    var worktype = "<input type='hidden' name='assignmentWorktype[]' value='" + $(this).parent().parents("div.categoryBox").children(".contentWindow.categoryHeader").children(".categoryTitle").text() + "'/>";
+    var classname = "<input type='hidden' name='assignmentClass' value='" + $(this).parent().parents(".classContent").attr("id") + "'/>";
+    var worktype = "<input type='hidden' name='assignmentWorktype' value='" + $(this).parent().parents("div.categoryBox").children(".contentWindow.categoryHeader").children(".categoryTitle").text() + "'/>";
   
     var deleteButton = `<button class="addAssignment deleteAssignment">x</button>`;
     $(this).parent().siblings(".assignmentIndicator").replaceWith(deleteButton);
 
     var thisTitle = $(this).siblings(".assignmentTitle").text();
-    var titleField = classname + worktype + `<input class="edithiddenstatus" type="hidden" name="editstatus" value="delete"/><input type="text" name="assignmentName[]" placeholder="Assignment Name" 
+    var titleField = classname + worktype + `<input class="edithiddenstatus" type="hidden" name="editstatus" value="edit"/><input type="text" name="assignmentName" placeholder="Assignment Name" 
                      class="editAssignmentTitle" value="` + thisTitle + `" />`;
     $(this).siblings(".assignmentTitle").replaceWith(titleField);
   
@@ -63,37 +63,37 @@ $(".editButton").click(function() {
     console.log($(this).siblings());
 
     var thisDate = $(this).siblings(".assignmentInfo").find(".dueDate").find("span").text();
-    var dateField = `<input type="date" name="due_date[]" class="editDueDate" 
+    var dateField = `<input type="date" name="due_date" class="editDueDate" 
                     value="` + thisDate + `" />`;
     $(this).siblings(".assignmentInfo").find(".dueDate").find("span").replaceWith(dateField);
 
     var thisGrade = $(this).siblings(".assignmentInfo").find(".assignmentGrade").text();
-    var gradeField = `<input type="number" name="assignmentgrade[]" placeholder="Grade" 
+    var gradeField = `<input type="number" name="assignmentgrade" placeholder="Grade" 
                      class="editAssignmentGrade" value="` + thisGrade + `" />`;
     $(this).siblings(".assignmentInfo").find(".assignmentGrade").replaceWith(gradeField);
 
-    $(this).parent().wrapAll("<form />");
+    $(this).parent().wrapAll("<form id='ssignmentadder' method='post' action:'homepage.php' />");
 
     var submitButton = `<input class="addAssignment confirmEdit" name="nowaddAssignment" type="submit" value=">" />`;
     $(this).replaceWith(submitButton);
 });
 
 $(".addAssignment").click(function() {
-    var classname = "<input type='hidden' name='assignmentClass[]' value='" + $(this).parent().parents(".classContent").attr("id") + "'/>";
-    var worktype = "<input type='hidden' name='assignmentWorktype[]' value='" + $(this).parent().parent().children(".contentWindow.categoryHeader").children(".categoryTitle").text() + "'/>";
+    var classname = "<input type='hidden' name='assignmentClass' value='" + $(this).parent().parents(".classContent").attr("id") + "'/>";
+    var worktype = "<input type='hidden' name='assignmentWorktype' value='" + $(this).parent().parent().children(".contentWindow.categoryHeader").children(".categoryTitle").text() + "'/>";
   
     var newAssignment = `<div class="assignment">
                           <button class="addAssignment deleteAssignment">x</button>
                           <form id="assignmentadder" method="post" action:"homepage.php">
                             <input class="edithiddenstatus" type="hidden" name="editstatus" value="add"/>` + 
                             classname + worktype +
-                            `<input type="text" name="assignmentName[]" placeholder="Assignment Name" class="editAssignmentTitle" />
+                            `<input type="text" name="assignmentName" placeholder="Assignment Name" class="editAssignmentTitle" />
                             <input class="addAssignment confirmEdit" name="nowaddAssignment" type="submit" value=">" />
                             <div class="assignmentInfo">
                               <p class="dueDate">due:
-                                <input name="due_date[]" type="date" class="editDueDate" />
+                                <input name="due_date" type="date" class="editDueDate" />
                               </p>
-                              <input name="assignmentgrade[]" type="number" placeholder="Grade" class="editAssignmentGrade" />
+                              <input name="assignmentgrade" type="number" placeholder="Grade" class="editAssignmentGrade" />
                             </div>
                           </form>
                         </div>`;
