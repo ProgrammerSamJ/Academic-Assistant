@@ -459,7 +459,7 @@
 
 	<body>
 		<div id="header">
-			<span id="logo">Academia</span>
+			<span id="logo">ACADEMIA</span>
 
 			<div id="userpanel">
 				<div id="user">
@@ -477,7 +477,7 @@
 			</div>
 		</div>
       
-        <div>
+        <div id="echoMessage">
           <p>
             <?php
               echo $insertedclass;

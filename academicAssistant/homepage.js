@@ -33,8 +33,8 @@ $(".categoryHeader").click(function() {
 });
 
 var categoryForm = `<div class="newCategory">
-                      <input class="addClassField" type="text" name="worktype[]" placeholder="Category, e.g. Homework" />
-                      <input class="addClassField" type="number" name="gradeweight[]" placeholder="Percent of total grade" />
+                      <input class="uiField" type="text" name="worktype[]" placeholder="Category, e.g. Homework" />
+                      <input class="uiField" type="number" name="gradeweight[]" placeholder="Percent of total grade" />
                       <div class="deleteCategory">X</div>
                     </div>`;
 
