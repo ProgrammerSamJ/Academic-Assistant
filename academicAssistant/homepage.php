@@ -31,25 +31,31 @@
     }
     $_POST["classname"] = join("",$removeSpace);
     
+    /* Check for adding a duplicate class */
     $duplicateClass = $conn->query("SELECT class FROM classes WHERE userid='" . $_SESSION["userid"] . "' AND class='" . $_POST["classname"] . "'");
     $getDup = $duplicateClass->fetch();
     
     $classexists = $getDup["class"];
     
+    /* Don't add class if it already exists */
     if($classexists){
       $addclasserrors = "Class already exists!";
     }
     
+    /* Create the class that does not exist */
     else{
       $checkempty = 0;
       $totalweight = 0;
 
+      /* Check for empty class information fields and the total weight to be equal to 100% */
       for($x=0; $x<sizeof($_POST["worktype"]); $x++){
         $totalweight += $_POST["gradeweight"][$x];
         if($_POST["classname"] == "" || $_POST["worktype"][$x] == "" || $_POST["gradeweight"][$x] == ""){
           $checkempty = 1;
         }
       }
+      
+      /* If all fields are filled in and the total weight equal 100% */
       if($checkempty == 0 && $totalweight == 100){
         /* Inserting a newly created class */
         $addClass = $conn->prepare("INSERT INTO classes (userid, class, grade) VALUES (:userid, :class, :grade)");
@@ -64,6 +70,7 @@
           $addclasserrors .= "There was an error adding the class!";
         }
 
+        /* Addinging the class and work-types into the database */
         for($x=0; $x<sizeof($_POST["worktype"]); $x++){
           /* Initializing the newly added class's assignment's grade to 0 */
           $addClassGrade = $conn->prepare("INSERT INTO workgrade (userid, class, work_type, weight, grade) VALUES (:userid, :class, :worktype, :weight, :grade)");
@@ -89,19 +96,29 @@
   /* Adding an assignment to the work categories */
   if(isset($_POST["nowaddAssignment"]) && isset($_POST["editstatus"])){
     $checkempty = 0;
+    
+    /* Check for empty fields */
     if($_POST["assignmentName"] == "" || $_POST["due_date"] == ""){
       $checkempty = 1;
     }
+    
     if($checkempty == 0){
+      
+      /* Allow the editing of classes after clicking the "edit" button */
       if($_POST["editstatus"] == "edit"){
         $deleteassignment = $conn->prepare("DELETE FROM assignments WHERE userid=? AND class=? AND work_type=? AND assignment=?");
         $deleteassignment->execute(array($_SESSION["userid"], $_POST["assignmentClass"], $_POST["assignmentWorktype"], $_POST["assignmentName"]));
       }
+      
+      /* If the field is blank for the class, the grade is initialized to 0 */
       if($_POST["assignmentgrade"] == ""){
         $_POST["assignmentgrade"] = 0;
       }
+      
+      /* Convert the date into the Y-m-d format */
       $_POST["due_date"] = date("Y-m-d", strtotime($_POST["due_date"]));
 
+      /* Adding the assignments into the databse */
       $addAssignment = $conn->prepare("INSERT INTO assignments (userid, class, work_type, assignment, due_date, grade) VALUES (:userid, :class, :work_type, :assignment, :due_date, :grade)");
       $insert = $addAssignment->execute(array(":userid" => $userid,
                                               ":class" => $_POST["assignmentClass"],
@@ -134,6 +151,8 @@
     /* Loop to create the individual assignments for each specific class and work */
     foreach($get as $row){
       if($row){
+        
+        /* If the assignment does not exist, create initialization markup in HTML */
         if(!isset($assignmentsarray[$row["class"] . "," . $row["work_type"]])){
           if($currenttime <= $row["due_date"]){
             $diff = abs(strtotime($row["due_date"]) - strtotime($currenttime));
@@ -170,6 +189,8 @@
                     </div>
                 </div>");
         }
+        
+        /* If the assignment does exist, add onto the already created html markup */
         else{
           if($currenttime <= $row["due_date"]){
             $diff = abs(strtotime($row["due_date"]) - strtotime($currenttime));
@@ -217,15 +238,18 @@
 
   $classes = "";
 
+  /* Add class options onto the drop down fields */
   foreach($get as $row){
     $classes .= "<option value='" . $row["class"] . "'>" . $row["class"] . "</option>";
   }
 
+  /* Grabbing the assignment categories from databse */
   $grabCategories = $conn->query("SELECT work_type FROM workgrade WHERE userid ='" . $userid . "'");
   $get = $grabCategories->fetchAll();
 
   $categories = "";
 
+  /* Do not duplicate the assignment categories */
   foreach($get as $row){
     if(strpos($categories, $row["work_type"]) === false){
       $categories .= "<option value='" . $row["work_type"] . "'>" . $row["work_type"] . "</option>";
@@ -238,6 +262,7 @@
 
   $classinfo = "";
 
+  /* Creating separate class sections that will appear when you select them from the drop down fields */
   foreach($found as $classrow){
     $grabClasses = $conn->query("SELECT work_type, weight, grade FROM workgrade WHERE userid ='" . $userid . "' AND class='" . $classrow["class"] . "'");
     $get = $grabClasses->fetchAll();
@@ -273,6 +298,7 @@
           $updateworkgrade->execute(array($average, $_SESSION["userid"], $classrow["class"], $row["work_type"]));
           /* ------------------------------------------------------ */
           
+          /* Creating an empty class without assignments or grades */
           if(empty($assignmentsarray[$classrow["class"] . "," . $row["work_type"]])){
             $classinfo .= " <div class='categoryBox'>
                                 <div class='contentWindow categoryHeader'>
@@ -289,6 +315,8 @@
                                 </div>
                             </div>";
           }
+          
+          /* Add on assignments and grades */
           else{
             $classinfo .=  "  <div class='categoryBox'>
                                 <div class='contentWindow categoryHeader'>
@@ -319,6 +347,8 @@
   $lettergrade = ""; 
   
   if($get){
+    
+    /* Calculate the grades, check the grade range to use the correct grade indicator, such as A for grades >= 90 */
     foreach($get as $row){
       $bringingGrades = $conn->query("SELECT weight, grade FROM workgrade WHERE userid='" .$_SESSION["userid"]. "' AND class='" .$row["class"]. "'");
       $bring = $bringingGrades->fetchAll();
@@ -363,6 +393,7 @@
                     </div>";
   }
 
+  /* Grabs the upcoming assignments from all of the classes that the user is taking */
   $upcomingassignments = $conn->query("SELECT class, assignment, due_date FROM assignments WHERE userid='" .$_SESSION["userid"]. "'");
   $get = $upcomingassignments->fetchAll();
 
@@ -406,8 +437,8 @@
                 </div>";
   }
 
-  $calculated = "";
   /* Grade Calculator */
+  $calculated = "";
   if(isset($_POST["gradecalculator"])){
     
     $otherContributions = 0;
@@ -441,6 +472,7 @@
     $_POST["desiredgrade"];
     $_POST["totalassignments"];
     
+    /* Final algorithm to calculate the needed points to achieve the indicated grade */
     $calculatedSum = ((($_POST["desiredgrade"] - $otherContributions) / ($currentselectedWeight/100)) * $_POST["totalassignments"]) - $currentselectedSum;
     
     $calculated = "You need " .$calculatedSum. " points between your remaining assignments.";
@@ -458,6 +490,8 @@
 	</head>
 
 	<body>
+      
+        <!-- Header bar -->
 		<div id="header">
 			<span id="logo">ACADEMIA</span>
 
@@ -477,6 +511,7 @@
 			</div>
 		</div>
       
+        <!-- Area for the error/non-error information -->
         <div id="echoMessage">
           <p>
             <?php
@@ -490,6 +525,7 @@
           </p>
         </div>
 
+        <!-- Field for the Home/Classes drop down field -->
 		<div id="mainbox">
 			<div id="classHeader">
 				<select id="classSelect">
@@ -500,13 +536,10 @@
 				</select>
 			</div>
 
-
-
-
-
+            <!-- Initial class homepage -->
 			<div class="classContent" id="Home">
 
-				<!-- UPCOMING ASSIGNMENTS -->
+				<!-- Upcoming Assignments -->
 				<div class="categoryBox">
 					<div class="contentWindow categoryHeader">
 						<p class="categoryTitle">Upcoming Assignments</p>
@@ -519,7 +552,7 @@
 					</div>
 				</div>
 
-				<!-- GRADES -->
+				<!-- Grades -->
 				<div class="categoryBox">
 					<div class="contentWindow categoryHeader">
 						<p class="categoryTitle">Grades</p>
@@ -532,14 +565,14 @@
 					</div>
 				</div>
 				
-				<!-- NEW CLASS -->
+				<!-- Adding on a new class -->
 				<div class="categoryBox">
 					<div class="contentWindow categoryHeader" id="addClass">
 						<p class="categoryTitle">Add New Class</p>
 					</div>
 
 					<div class="categoryMenu">
-						<form id="addClass" method="post" action="homepage.php"> <!-- Form for new class data -------------------------------->
+						<form id="addClass" method="post" action="homepage.php">
                           <div id="addClassTitle">
                               <p class="interfaceLabel">Class Name:</p>
                               <input class="uiField" id="classname" name="classname" type="text" placeholder="e.g. Algebra" />
@@ -562,7 +595,7 @@
 					</div>
 				</div>
 
-				<!-- CALCULATOR -->
+				<!-- Calculator -->
 				<div class="categoryBox">
 					<div class="contentWindow categoryHeader" id="calculator">
 						<p class="categoryTitle">Grade Calculator</p>
