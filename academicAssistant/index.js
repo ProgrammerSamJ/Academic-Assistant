@@ -3,6 +3,7 @@ $(document).ready( function() {
   var height = $(window).height();
 	$("#login").css("margin-top", (height-$("#login").height()-100)/2 + "px");
   
+  /* jQuery that makes the Login/Register combination page possible */
   $("#switch").click(function() {
     if($("#status").val() == "login"){
       $("#switch").text("Already have an account? Log In!");
@@ -32,6 +33,7 @@ $(document).ready( function() {
   });
 });
 
+/* Some resizing functions for aesthetics */
 $(window).resize(function() {
 	var height = $(window).height();
 	$("#login").css("margin-top", (height-$("#login").height()-100)/2 + "px");

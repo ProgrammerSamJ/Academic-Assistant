@@ -12,6 +12,7 @@ body {
   width: 100%;
 }
 
+/* Error messages */
 .errors {
   border: red;
   color: red;
@@ -107,6 +108,7 @@ button:hover {
   cursor: pointer;
 }
 
+/* Allows the registration fields to appear in the login page */
 #firstnamechange, #lastnamechange, #emailchange, #password2change {
   display: block;
 }

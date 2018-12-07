@@ -2,10 +2,12 @@
 
   require "config/config.php";  
 
+  /* Starting user session */
   if(!isset($_SESSION)){
     session_start();
   }
 
+  /* Changing the value of the register/logn button */
   $status = "login";
   $button = "Log In";
   $statusrep = "Don't have an account? Register Now!"; 
@@ -14,10 +16,9 @@
     $status = $_POST["status"];
   }
 
+  /* Errors to be echoed in case user does not fill in a field */
   $accountmade = "";
-
   $noAccountError = "";
-
   $firstnameError = "";
   $lastnameError = "";
   $usernameError = "";
@@ -25,12 +26,13 @@
   $emailError = "";
   $reenterpasswordError= "";
 
+  /* Variables in the "Register" mode */
   $firstnamevar = "firstname";
   $lastnamevar = "lastname";
   $emailvar = "email";
   $password2var = "password2";
 
-  /* Change the protocol if the user already has an account */
+  /* Change the protocol if the user already has an account (Tell them to log in) */
   if($status == "login"){
     
     $button = "Log In";
@@ -41,6 +43,7 @@
     $emailvar = "email";
     $password2var = "password2";
 
+    /* Check for a username and password during login */
     if(isset($_POST["save"])){
       if(!isset($_POST["username"]) || trim($_POST["username"] == "")){
         $usernameError = "<div>Please enter a username!</div>";
@@ -50,11 +53,13 @@
       }
     }
 
+    /* Make a PDO connection to check for the username and password */
     if(isset($_POST["username"]) && isset($_POST["password"])){
       if($_POST["username"] != "" && $_POST["password"] != ""){
         $conn = new PDO("mysql:host=" . $config["DB_HOST"] . ";dbname=academia", $config["DB_USERNAME"], $config["DB_PASSWORD"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+        /* Check that you are able to grab an account  */
         $grabAccount = $conn->query("SELECT userid, first_name, last_name FROM users where username = '" . $_POST['username'] . "' AND password = '" . $_POST['password'] . "'" );
         $query = $grabAccount->fetch();
 
@@ -62,6 +67,7 @@
         $firstname = $query["first_name"];
         $lastname = $query["last_name"];
 
+        /* Login and start the session */
         if($userid){
           $_SESSION["userid"] = $userid;
           $_SESSION["firstname"] = $firstname;
@@ -69,6 +75,8 @@
           header("Location: homepage.php");
           exit();
         }
+        
+        /* No account found */
         else{
           $noAccountError = "<div>Incorrect Username or Password!</div>";
         }
@@ -89,6 +97,7 @@
     $emailvar = "emailchange";
     $password2var = "password2change";
 
+    /* Check that all fields are set during registration */
     if(isset($_POST["save"])){
       if(!isset($_POST["firstname"]) || trim($_POST["firstname"]) == ""){
         $firstnameError = "<div>Please enter your first name!</div>";
@@ -111,15 +120,17 @@
 
     }
   
+    /* Check that all the fields are not blank */
     if(isset($_POST["firstname"]) && isset($_POST["lastname"]) && isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["password2"]) && isset($_POST["email"])){
 
       if($_POST["firstname"] != "" && $_POST["lastname"] != "" && $_POST["username"] != "" && $_POST["password"] != "" && $_POST["email"] != "" && $_POST["password2"] != ""){
         
+        /* Create a PDO connection to create account */
         if($_POST["password"] == $_POST["password2"]){
           $conn = new PDO("mysql:host=" . $config["DB_HOST"] . ";dbname=academia", $config["DB_USERNAME"], $config["DB_PASSWORD"]);
           $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-
+          /* Check that there isn't an existing user with the same username and password */
           $grabAccount = $conn->query("SELECT userid, first_name, last_name FROM users WHERE username = '" . $_POST["username"] . "' AND password = '" . $_POST["password"] . "'" );
           $query = $grabAccount->fetch();
 
@@ -127,6 +138,7 @@
           $firstname = $query["first_name"];
           $lastname = $query["last_name"];
 
+          /* Already exists a user */
           if($userid){
             $accountmade = "Account already registered. Log In!";
             $_POST["firstname"] = "";
@@ -135,6 +147,7 @@
             $_POST["username"] = "";
           }
 
+          /* Make the account */
           else{
             $makeAccount = $conn->prepare("INSERT INTO users (last_name, first_name, username, password, email) VALUES (:lastname, :firstname, :username, :password, :email)");
             $diditwork = $makeAccount->execute(array(":lastname" => $_POST["lastname"],
@@ -161,9 +174,11 @@
     }
   }
 
+  /* Unset all the variables and destroy the session upon logout */
   if(isset($_POST["logout"])){
-    unset($_SESSION['username']);
-    unset($_SESSION['uid']);
+    unset($_SESSION['firstname']);
+    unset($_SESSION['lastname']);
+    unset($_SESSION['userid']);
     
     setcookie(session_name(), '', time() - 72000);
     session_destroy();
