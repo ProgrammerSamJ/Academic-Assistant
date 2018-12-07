@@ -44,6 +44,7 @@
       $checkempty = 0;
       $totalweight = 0;
 
+<<<<<<< HEAD
       for($x=0; $x<sizeof($_POST["worktype"]); $x++){
         $totalweight += $_POST["gradeweight"][$x];
         if($_POST["classname"] == "" || $_POST["worktype"][$x] == "" || $_POST["gradeweight"][$x] == ""){
@@ -109,6 +110,13 @@
                                               ":assignment" => $_POST["assignmentName"],
                                               ":due_date" => $_POST["due_date"],
                                               ":grade" => $_POST["assignmentgrade"]));
+=======
+      $insert = $addClass->execute(array(":userid" => $userid,
+                                         ":class" => $_POST["classname"],
+                                         ":worktype" => $_POST["worktype"],
+                                         ":weight" => $_POST["gradeweight"]));
+
+>>>>>>> 113fb7460c7671b81beafc16a3dd418b8bd19c34
       if($insert === TRUE){
         $insertedclass .= "Successfully inserted assignment(s)!";
       }
@@ -116,6 +124,10 @@
         $addclasserrors .= "There was an error inserting assignment(s)!";
       }
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 113fb7460c7671b81beafc16a3dd418b8bd19c34
     else{
       $addclasserrors .= "Please fill in all the fields before adding assignments!";
     }
@@ -156,7 +168,7 @@
           if($row["grade"] != 0){
             $indicator = "<div class='assignmentIndicator aiComplete'></div>";
           }
-          $assignmentsarray += array($row["class"] . "," . $row["work_type"] => 
+          $assignmentsarray += array($row["class"] . "," . $row["work_type"] =>
                 "<div class='assignment'>" .
                     $indicator .
                     "<div class='formBox'>
@@ -320,6 +332,7 @@
   
   if($get){
     foreach($get as $row){
+<<<<<<< HEAD
       $bringingGrades = $conn->query("SELECT weight, grade FROM workgrade WHERE userid='" .$_SESSION["userid"]. "' AND class='" .$row["class"]. "'");
       $bring = $bringingGrades->fetchAll();
 
@@ -391,6 +404,42 @@
       }
       else{
         continue;
+=======
+      if($row){
+        if(empty($assignmentsarray[$row["class"] . "," . $row["work_type"]])){
+          $classes .= "<option value='" . $row["class"] . "'>" . $row["class"] . "</option>";
+
+          $classinfo .= "<div class='categoryBox'>
+                            <div class='contentWindow categoryHeader'>
+                              <p class='categoryTitle'>" . $row["work_type"] . "</p>
+                              <button class='addAssignment'>+</button>
+                              <div class='categoryStats'>
+                                <p class='categoryWeight'>Weight: " . $row["weight"] . "</p>
+                                <p class='categoryGrade'>87</p>
+                              </div>
+                            </div>
+                            <div class='categoryMenu'>
+                            </div>
+                          </div>";
+        }
+        else{
+          $classes .= "<option value='" . $row["class"] . "'>" . $row["class"] . "</option>";
+
+          $classinfo .= "<div class='categoryBox'>
+                            <div class='contentWindow categoryHeader'>
+                              <p class='categoryTitle'>" . $row["work_type"] . "</p>
+                              <button class='addAssignment'>+</button>
+                              <div class='categoryStats'>
+                                <p class='categoryWeight'>Weight: " . $row["weight"] . "</p>
+                                <p class='categoryGrade'>87</p>
+                              </div>
+                            </div>
+                            <div class='categoryMenu'>" .
+                              $assignmentsarray[$row["class"] . "," . $row["work_type"]] .
+                            "</div>
+                          </div>";
+        }
+>>>>>>> 113fb7460c7671b81beafc16a3dd418b8bd19c34
       }
     }
   }
@@ -455,6 +504,21 @@
 	<head>
 		<title>Academia</title>
 		<link rel="stylesheet" type="text/css" href="homepage.css">
+    <script>
+      $(document).ready(function(){
+          $('#classSelect').change(function(){
+                var class = $(this).val();
+                $.ajax({
+                    url:"load_data.php",
+                     method:"POST",
+                    data:{class:class},
+                    success:function(data){
+                         $('#homeContent').html(data);
+                    }
+               });
+          });
+      });
+    </script>
 	</head>
 
 	<body>
@@ -464,7 +528,7 @@
 			<div id="userpanel">
 				<div id="user">
 					<span id="username">
-                      <?php 
+                      <?php
                         echo $firstname . " " . $lastname;
                       ?>
                     </span>
@@ -493,6 +557,7 @@
 		<div id="mainbox">
 			<div id="classHeader">
 				<select id="classSelect">
+<<<<<<< HEAD
 					<option value="Home">Home</option>
 					<?php 
                       echo $classes; 
@@ -507,6 +572,22 @@
 			<div class="classContent" id="Home">
 
 				<!-- UPCOMING ASSIGNMENTS -->
+=======
+					<option value="home">Home</option>
+                      <?php
+                        echo $classes;
+                      ?>
+				</select>
+			</div>
+
+			<div class="classContent" id="homeContent">
+
+                <?php
+                  echo $classinfo;
+                ?>
+
+				<!-- INTERFACE FOR USERS TO ADD A CLASS -->
+>>>>>>> 113fb7460c7671b81beafc16a3dd418b8bd19c34
 				<div class="categoryBox">
 					<div class="contentWindow categoryHeader">
 						<p class="categoryTitle">Upcoming Assignments</p>
@@ -618,7 +699,24 @@
 
 
 
+<<<<<<< HEAD
 		<script type="text/javascript" src="jquery.js"></script>
 		<script type="text/javascript" src="homepage.js"></script>
 	</body>
 </html>
+=======
+
+	Header elements
+	<div id="classGrade">
+		<div id="classGradeNumber">
+			<p>100</p>
+		</div>
+
+		<div id="classGradeLetter">
+			<p>D</p>
+		</div>
+	</div>
+-->
+
+<!-- Home has class grades, assignments for the next week, calculator, and add-class window -->
+>>>>>>> 113fb7460c7671b81beafc16a3dd418b8bd19c34
