@@ -1,3 +1,5 @@
+##Acadamia
+
 Welcome to our website, Academia!
 Our website's purpose to allow students to keep track of their academic work, such as grades and assignment due dates, while utilizing a grade calculator that would allow them to keep track of future grades that they would need to obtain in order to achieve a certain grade in the class.
 
@@ -6,13 +8,13 @@ Our website's purpose to allow students to keep track of their academic work, su
 Our website has two main parts:
 
   - A combined login/registration page (created through HTML, CSS, and JavaScript, and jQuery)
-  - A homepage where all the action takes place, such our class page   selection and organization, adding classes feature, and our       grade   calculator (created through HTML, CSS, JavaScript,         jQuery, PHP, and SQL)
+  - A homepage where all the action takes place, such our class page   selection and organization, adding classes feature, and our grade calculator (created through HTML, CSS, JavaScript, jQuery, PHP, and SQL)
 
 ********************************************************************
-For the index file, which is our login/registration page, the user can switch between being able to log in or register by clicking the the link at the bottom that would either say:
+For the index file, which is our login/registration page, the user can switch between being able to log in or register by clicking the link at the bottom that would either say:
 
-  - "Don't have an account? Register Now!" ---- if you are on the     login page.
-  - "Already have an account? Log In!" ---- if you are on the         registration page.
+  - "Don't have an account? Register Now!" ---- if you are on the login page.
+  - "Already have an account? Log In!" ---- if you are on the registration page.
 
 We added a slide toggle feature to transition between the login and registration page so that there is only one page that will provide the user with the ability to register or login.
 
@@ -20,7 +22,7 @@ For the registration page, there are three features that we keep track of to all
 
   - All the fields are filled in
   - The password and the re-enter password fields match
-  - There isn't an already existing username and password             combination that already exists in the database
+  - There isn't an already existing username and password combination that already exists in the database
 
   ~~~~~~~ In the future, we would like to implement a few more features to improve on our registration page, which would be to authenticate the email, set a minimum for the length of the username and password, and salt the password for the user. ~~~~~~~
 
@@ -32,7 +34,7 @@ Once the user successfully logs in, he will be redirected to our homepage with t
 
 ********************************************************************
 
-For our homepage file, there exists a simple home tab for all new users. As the user adds classes onto their acount, they would have more tabs that correspond to the classes that they are taking.
+For our homepage file, there exists a simple home tab for all new users. As the user adds classes onto their account, they would have more tabs that correspond to the classes that they are taking.
 
 ~~~~~~~ Note that there is minimal HTML markup on the homepage. The HTML only serves as a container to display the information that will be retrieved and echoed from the database. ~~~~~~~
 
@@ -40,9 +42,9 @@ On the home page, there is a section for upcoming assignments and overall grades
 
 The "Add New Class" works exactly as it's labeled ---- it allows the user to add a new class onto their current existing list of classes, or their very first class should they be a new user. The user would have to input a class name, such as Algebra and Biology and all the assignment categories associated with that class, such as Homeworks, Tests, Quizzes, etc, along with the specific weights that these assignment categories have in the grading of the class. For example, normally tests would cover about a 40% impact of the overall class grade. In order to add a new class, the user has to meet 3 requirements:
 
-  - All the fields must be filled in (even for multiple assignment     categories)
-  - The total weights of the categories must be equal to 100% in       order for the class to be added.
-  - Do not add a class that has been previously added (an error       message will pop up)
+  - All the fields must be filled in (even for multiple assignment categories)
+  - The total weights of the categories must be equal to 100% in order for the class to be added.
+  - Do not add a class that has been previously added (an error message will pop up)
 
 The "Grade Calculator" is actually quite simple. All the user needs to do is pick a class, an assignment category in the class, all of the total assignments in that category, and the desired class grade. In the background, there will be calculations that uses the user's current accumulated grade in all categories from the databases and help them calculate the amount of points that the user needs to obtain on future assignments in the specific category to achieve a certain grade in the class.
 
