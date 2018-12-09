@@ -1,4 +1,4 @@
-// Resize main tab view with window
+// Resize main box  with window
 $(document).ready(function() {
   
 	var width = $(window).width();
@@ -7,6 +7,8 @@ $(document).ready(function() {
 	$(".categoryMenu").css("width", $("#mainbox").width()-55 + "px");
 });
 
+
+// Resise main box when window is resized
 $(window).resize(function() {
 	var width = $(window).width();
 	$("#mainbox").css("width", width-200 + "px");
@@ -14,7 +16,7 @@ $(window).resize(function() {
 	$(".categoryMenu").css("width", $("#mainbox").width()-55 + "px");
 });
 
-
+// Hide all classes and display the one corresponding to the selection.
 $("#classSelect").change(function() {
     $(".classContent").css("display", "none");
 
@@ -23,15 +25,14 @@ $("#classSelect").change(function() {
     $(selectedClass).css("display", "block");
 });
 
-
-
-
+// Prevent slideToggle of category content when add assignment button is pressed.
 $(".categoryHeader").click(function() {
 	$(this).next().slideToggle();
 }).children(".addAssignment").click(function() {
     return false;
 });
 
+// Add a new category when the button is pressed in "Add Class"
 var categoryForm = `<div class="newCategory">
                       <input class="uiField" type="text" name="worktype[]" placeholder="Category, e.g. Homework" />
                       <input class="uiField" type="number" name="gradeweight[]" placeholder="Percent of total grade" />
@@ -42,10 +43,14 @@ $("#addCategoryButton").click(function() {
     $("#addClassCategories").append(categoryForm);
 });
 
+// Remove category when corresponding button is pressed.
 $("#addClassCategories").on("click", ".deleteCategory", function() {
     $(this).parent().remove();
 });
 
+// When the edit button for an assignment is clicked, collect the information from
+// the assignment and replace everything with fields that contain that information.
+// Wrap the entire thing in a form so that the information can be collected.
 $(".editButton").click(function() {
   
     var classname = "<input type='hidden' name='assignmentClass' value='" + $(this).parent().parents(".classContent").attr("id") + "'/>";
@@ -78,6 +83,7 @@ $(".editButton").click(function() {
     $(this).replaceWith(submitButton);
 });
 
+// Add a new assignment field when the add assignment button is clicked.
 $(".addAssignment").click(function() {
     var classname = "<input type='hidden' name='assignmentClass' value='" + $(this).parent().parents(".classContent").attr("id") + "'/>";
     var worktype = "<input type='hidden' name='assignmentWorktype' value='" + $(this).parent().parent().children(".contentWindow.categoryHeader").children(".categoryTitle").text() + "'/>";
@@ -101,6 +107,7 @@ $(".addAssignment").click(function() {
     $(this).parent().siblings(".categoryMenu").prepend(newAssignment);
 });
 
+// Deletes the corresponding assignment.
 $(document).on("click", ".deleteAssignment", function() {
     $(this).parent().remove();
 });
