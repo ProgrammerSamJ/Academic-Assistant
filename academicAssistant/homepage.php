@@ -411,7 +411,7 @@
         if($diff <= 7){
           $urgency .= "<div class='assignment'>
                         <div class='assignmentIndicator aiWarning'></div>
-                        <p class='assignmentTitle'>" .$row["class"] . ":" .$row["assignment"]. "</p>
+                        <p class='assignmentTitle'>" .$row["class"] . ": " .$row["assignment"]. "</p>
                         <p class='dueDateNotify'>due:<span>" .$row["due_date"]. "</span></p>
                     </div>";
           $counter++;
