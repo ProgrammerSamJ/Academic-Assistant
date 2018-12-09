@@ -22,7 +22,7 @@ For the registration page, there are three features that we keep track of to all
   - The password and the re-enter password fields match
   - There isn't an already existing username and password             combination that already exists in the database
 
-  * In the future, we would like to implement a few more features to improve on our registration page, which would be to authenticate the email, set a minimum for the length of the username and password, and salt the password for the user.
+  ~~~~~~~ In the future, we would like to implement a few more features to improve on our registration page, which would be to authenticate the email, set a minimum for the length of the username and password, and salt the password for the user. ~~~~~~~
 
 Once the user has created an account, the account will be saved in the database, and they can switch back to the login page by clicking the link at the bottom again, which would bring them to the login page. The login page has one feature that allow the user to successfully login:
 
