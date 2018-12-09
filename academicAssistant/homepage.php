@@ -498,13 +498,13 @@
 			<div id="userpanel">
 				<div id="user">
 					<span id="username">
-                      <?php 
-                        echo $firstname . " " . $lastname;
-                      ?>
-                    </span>
+              <?php 
+                echo $firstname . " " . $lastname;
+              ?>
+          </span>
 					<form id="logoutbox" method="post" action="index.php">
-                      <input id="logout" name="logout" type="submit" value="Log Out"/>
-                    </form>
+            <input id="logout" name="logout" type="submit" value="Log Out"/>
+          </form>
 				</div>
 
 				<img src="https://i.pinimg.com/originals/44/03/c0/4403c0b61671a3348009888bbe6e9730.jpg" id="userimage" />
@@ -530,9 +530,9 @@
 			<div id="classHeader">
 				<select id="classSelect">
 					<option value="Home">Home</option>
-					<?php 
-                      echo $classes; 
-                    ?>
+					    <?php 
+                echo $classes; 
+              ?>
 				</select>
 			</div>
 
@@ -546,9 +546,9 @@
 					</div>
 
 					<div class="categoryMenu">
-                        <?php 
-                          echo $urgency;
-                        ?>
+                <?php 
+                  echo $urgency;
+                ?>
 					</div>
 				</div>
 
@@ -559,9 +559,9 @@
 					</div>
 
 					<div class="categoryMenu">
-                        <?php
-                          echo $gradeinfo;
-                        ?>
+                <?php
+                  echo $gradeinfo;
+                ?>
 					</div>
 				</div>
 				
@@ -573,24 +573,24 @@
 
 					<div class="categoryMenu">
 						<form id="addClass" method="post" action="homepage.php">
-                          <div id="addClassTitle">
-                              <p class="interfaceLabel">Class Name:</p>
-                              <input class="uiField" id="classname" name="classname" type="text" placeholder="e.g. Algebra" />
-                          </div>
+              <div id="addClassTitle">
+                  <p class="interfaceLabel">Class Name:</p>
+                  <input class="uiField" id="classname" name="classname" type="text" placeholder="e.g. Algebra" />
+              </div>
 
-                          <div id="addClassCategories">
-                              <div id="addCategoriesTitle">
-                                  <p class="interfaceLabel">Assignment Categories</p>
-                                  <div id="addCategoryButton">+</div>
-                              </div>
+              <div id="addClassCategories">
+                  <div id="addCategoriesTitle">
+                      <p class="interfaceLabel">Assignment Categories</p>
+                      <div id="addCategoryButton">+</div>
+                  </div>
 
-                              <div class="newCategory">
-                                  <input class="uiField" name="worktype[]" type="text" placeholder="Category, e.g. Homework" />
-                                  <input class="uiField" name="gradeweight[]" type="number" placeholder="Percent of total grade" />
-                                  <div class="deleteCategory">X</div>
-                              </div>
-                          </div>
-                          <input id="createClass" class="homeButton" type="submit" name="createClass" value="Add Class" />
+                  <div class="newCategory">
+                      <input class="uiField" name="worktype[]" type="text" placeholder="Category, e.g. Homework" />
+                      <input class="uiField" name="gradeweight[]" type="number" placeholder="Percent of total grade" />
+                      <div class="deleteCategory">X</div>
+                  </div>
+              </div>
+              <input id="createClass" class="homeButton" type="submit" name="createClass" value="Add Class" />
 						</form>
 					</div>
 				</div>
@@ -604,52 +604,50 @@
 					<div class="categoryMenu">
 						<form id="calculateGradeWanted" method="post" action="homepage.php">
 
-                          <div class="calculatorItem">
-                              <p class="interfaceLabel">Class:</p>
-                              <select id="calculatorClassSelector" name="calculatorClass">
-                                  <?php
-                                    echo $classes
-                                  ?>
-                              </select>
-                          </div>
+              <div class="calculatorItem">
+                  <p class="interfaceLabel">Class:</p>
+                  <select id="calculatorClassSelector" name="calculatorClass">
+                      <?php
+                        echo $classes
+                      ?>
+                  </select>
+              </div>
 
-                          <div class="calculatorItem">
-                              <p class="interfaceLabel">Category:</p>
-                              <select id="calculatorCategory" name="calculatorCategory">
-                                  <?php
-                                    echo $categories;
-                                  ?>
-                              </select>
-                          </div>
+              <div class="calculatorItem">
+                  <p class="interfaceLabel">Category:</p>
+                  <select id="calculatorCategory" name="calculatorCategory">
+                      <?php
+                        echo $categories;
+                      ?>
+                  </select>
+              </div>
 
-                          <div class="calculatorItem">
-                              <p class="interfaceLabel">Total Assignments in Category:</p>
-                              <input type="text" name="totalassignments" placeholder="0" class="uiField" />
-                          </div>
+              <div class="calculatorItem">
+                  <p class="interfaceLabel">Total Assignments in Category:</p>
+                  <input type="text" name="totalassignments" placeholder="0" class="uiField" />
+              </div>
 
-                          <div class="calculatorItem">
-                              <p class="interfaceLabel">Desired Class Grade:</p>
-                              <input type="text" name="desiredgrade" placeholder="0" class="uiField" />
-                          </div>
+              <div class="calculatorItem">
+                  <p class="interfaceLabel">Desired Class Grade:</p>
+                  <input type="text" name="desiredgrade" placeholder="0" class="uiField" />
+              </div>
 
-                            <input id="calculate" class="homeButton" type="submit" name="gradecalculator" value="Calculate" />
+                <input id="calculate" class="homeButton" type="submit" name="gradecalculator" value="Calculate" />
 
 						</form>
                         
-                        <p id="result">
-                          <?php
-                            echo $calculated;
-                          ?>
-                        </p>
+            <p id="result">
+              <?php
+                echo $calculated;
+              ?>
+            </p>
 					</div>
 				</div>
 			</div>
             <?php
               echo $classinfo;
             ?>
-          </div>
-
-
+    </div>
 
 		<script type="text/javascript" src="jquery.js"></script>
 		<script type="text/javascript" src="homepage.js"></script>
